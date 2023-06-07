@@ -1,0 +1,42 @@
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content" style="width: 700px;height: 410px;">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addPlanSondage">Importer PlanSondage</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row align-items-end" style=" margin: 0px;">
+                    <div class="form-group col-6">
+                        <label for="shpFile" style="font-size: 15px; margin: 15px;">Fichier .shp</label>
+                        <input type="file" class="form-control-file" name="shpFile" accept=".shp"
+                            (change)="onFileSelected($event,'shpFile')" ngModel>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="shxFile" style="font-size: 15px; margin: 15px;">Fichier .shx</label>
+                        <input type="file" class="form-control-file" name="shxFile" accept=".shx"
+                            (change)="onFileSelected($event,'shxFile')" ngModel>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="dbfFile" style="font-size: 15px; margin: 15px;">Fichier .dbf</label>
+                        <input type="file" class="form-control-file" name="dbfFile" accept=".dbf"
+                            (change)="onFileSelected($event,'dbfFile')" ngModel>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="prjFile" style="font-size: 15px; margin: 15px;">Fichier .prj</label>
+                        <input type="file" class="form-control-file" name="prjFile" accept=".prj"
+                            (change)="onFileSelected($event,'prjFile')" ngModel>
+                    </div>
+                    <div class="form-group col-12" style="text-align: right;">
+                        <button type="submit" class=" btn btn-outline-success round mr-1 mb-1 waves-effect waves-light"
+                            (click)="save()">Sauvegarder</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class=" modal-footer">
+        </div>
+    </div>
+</div>
