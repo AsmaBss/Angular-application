@@ -1,56 +1,15 @@
+<app-header (parcelle)="selectedParcelle($event)"></app-header>
 <div class="app-content content">
     <div class="content-wrapper">
-        <div class="content-header row">
-            <div class="content-header-left col-md-9 col-12 mb-2">
-                <div class="row breadcrumbs-top">
-                    <div class="col-12">
-                        <h2 class="content-header-title float-left mb-0">Maps</h2>
-                        <div class="breadcrumb-wrapper col-12">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a [routerLink]="['/Accueil']">Accueil</a>
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content-header-right text-md-left col-md-3 col-12 ">
-                <div class="form-group breadcrum-right">
-                    <div class="btn-group">
-                        <div class="dropdown">
-                            <button class="btn btn-flat-success dropdown-toggle mr-1 mb-1 waves-effect waves-light"
-                                type="button" id="dropdownMenuButton100" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                Séléctionner une parcelle
-                            </button>
-                            <div *ngIf="parcelles != []">
-                                <div *ngFor="let p of parcelles">
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton100"
-                                        (click)="selectedParcelle(p)">
-                                        <a class="dropdown-item">{{ p.nom }}</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-flat-success mr-1 mb-1 waves-effect waves-light"><a
-                                [attr.data-target]="'#addParcelle'" data-toggle="modal"
-                                style="background-color: transparent;border: 0 solid transparent;padding: 0;">
-                                <i class="feather icon-plus"></i> Parcelle
-                            </a>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="content-body">
-            <div id="sidebar" class="leaflet-sidebar collapsed" [hidden]="hideOptions">
+            <div id="sidebar" class="leaflet-sidebar" [hidden]="hideOptions">
                 <div class="leaflet-sidebar-tabs">
                     <ul role="tablist">
-                        <li><a href="#close" role="tab"><i class="fa fa-bars"></i></a></li>
+                        <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
                     </ul>
                 </div>
-                <div class="leaflet-sidebar-content">
-                    <div class="leaflet-sidebar-pane" id="close">
+                <div class="leaflet-sidebar-content active">
+                    <div class="leaflet-sidebar-pane active" id="home">
                         <div class="vs-checkbox-con vs-checkbox-success" style="margin:1rem;">
                             <input type="checkbox" [(ngModel)]="isCheckedParcelle"
                                 (change)="onCheckboxChange('parcelle')">
@@ -100,10 +59,10 @@
                     </div>
                 </div>
             </div>
-            <div id="map" style="height: 590px;z-index: 1;">
+            <div id="map" style="height: 670px;z-index: 1;">
             </div>
             <div id="details-container" class="details-container" style="display: none;">
-                <div class="card" style="height: 570px;">
+                <div class="card" style="height: 600px;">
                     <div class=" card-header">
                         <div class="card-title">Détails du prélèvement</div>
                         <button type="button" class="close" (click)="closeDiv()">
@@ -112,50 +71,59 @@
                         </button>
                     </div>
                     <div class="card-body">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <th class="font-weight-bold">Numéro </th>
-                                    <td> {{ prelevement?.numero }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="font-weight-bold">Munition Référence</th>
-                                    <td>{{ prelevement?.munitionReference }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="font-weight-bold">Côte Plateforme</th>
-                                    <td>{{ prelevement?.cotePlateforme }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="font-weight-bold">Profondeur à sécuriser</th>
-                                    <td>{{ prelevement?.profondeurASecuriser }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="font-weight-bold">Côte à sécuriser</th>
-                                    <td>{{ prelevement?.coteASecuriser }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="font-weight-bold">Remarques</th>
-                                    <td>{{ prelevement?.remarques }}</td>
-                                </tr>
-                                <tr>
-                                    <th class="font-weight-bold">Images</th>
-                                    <td style="font-size: 1.5rem;">
-                                        <a [attr.data-target]="'#modalImages-' + prelevement?.id" data-toggle="modal"
-                                            (click)="onPress(prelevement.id)">
-                                            <i class="feather icon-eye"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="font-weight-bold">Passes</th>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="col-12">
+                            <div style="float: left;" class="col-6"> Numéro : </div>
+                            <div style="float: right;" class="col-6">
+                                {{ prelevement?.numero }}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div style="float: left;" class="col-6"> Munition Référence : </div>
+                            <div style="float: right;" class="col-6">
+                                {{ prelevement?.munitionReference }}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div style="float: left;" class="col-6"> Côte Plateforme : </div>
+                            <div style="float: right;" class="col-6"> {{
+                                prelevement?.cotePlateforme }} </div>
+                        </div>
+                        <div class="col-12">
+                            <div style="float: left;" class="col-6"> Profondeur à sécuriser : </div>
+                            <div style="float: right;" class="col-6"> {{
+                                prelevement?.profondeurASecuriser }} </div>
+                        </div>
+                        <div class="col-12">
+                            <div style="float: left;" class="col-6"> Côte à sécuriser : </div>
+                            <div style="float: right;" class="col-6"> {{
+                                prelevement?.coteASecuriser }} </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="col-12">Remarques : </div>
+                        </div>
+                        <div class="col-12">
+                            <div style="float: left;" class="col-12">
+                                {{ prelevement?.remarques }}</div>
+                        </div>
+                        <hr style="margin-top: 40px;">
+                        <div class="col-12">
+                            <div style="float: left;" class="col-6"> Images </div>
+                            <div style="float: right;" class="col-6">
+                                <a [attr.data-target]="'#modalImages-' + prelevement?.id" data-toggle="modal"
+                                    (click)="modalImagesPrelevement(prelevement.id)">
+                                    <i class="feather icon-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <hr style="margin-top: 40px;">
+                        <div class="col-12">
+                            <div class="col-12">Passes </div>
+                        </div>
                         <div class="container">
                             <div class="box">
                                 <div *ngFor="let p of passes">
-                                    <div class="d-flex justify-content-between mt-2">
+                                    <div class="d-flex justify-content-between mt-2"
+                                        style="background-color: #f8f8f8;padding: 10px;margin: 10px 0px;">
                                         <div class="float-left">
                                             <h6 class="font-medium-2 mb-0">{{ p.munitionReference }}</h6>
                                             <p class="">Profondeur Sonde: {{ p.profondeurSonde }}</p>
@@ -167,7 +135,6 @@
                                             <p style="text-align:right;">{{ p.gradientMag }}</p>
                                         </div>
                                     </div>
-                                    <hr class="my-1">
                                 </div>
                             </div>
                         </div>
@@ -175,7 +142,7 @@
                 </div>
             </div>
             <div id="details-container2" class="details-container" style="display: none;">
-                <div class="card" style="height: 570px;">
+                <div class="card" style="height: 600px;">
                     <div class=" card-header">
                         <div class="card-title">Observations</div>
                         <button type="button" class="close" (click)="closeDiv2()">
@@ -184,7 +151,28 @@
                         </button>
                     </div>
                     <div class="card-body">
-                        testtttt
+                        <div class="col-12">
+                            <div style="float: left;" class="col-6"> Nom de l'observation : </div>
+                            <div style="float: right;" class="col-6"> {{
+                                observation?.nom }} </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="col-12">Description : </div>
+                        </div>
+                        <div class="col-12">
+                            <div style="float: left;" class="col-12">
+                                {{ observation?.description }}</div>
+                        </div>
+                        <hr style="margin-top: 40px;">
+                        <div class="col-12">
+                            <div style="float: left;" class="col-6"> Images </div>
+                            <div style="float: right;" class="col-6">
+                                <a [attr.data-target]="'#modalImagesObservations-' + observation?.id"
+                                    data-toggle="modal" (click)="modalImagesObservation(observation.id)">
+                                    <i class="feather icon-eye"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -198,8 +186,13 @@
         aria-hidden="true">
         <app-plan-sondage [parcelle]="parcelle"></app-plan-sondage>
     </div>
-    <div class="modal fade" [id]="'modalImages-' + prelevement.id" role="dialog" aria-labelledby="modalImagesTitle"
-        aria-hidden="true" *ngIf="display">
+    <div class="modal fade" [id]="'modalImages-' + prelevement?.id" role="dialog" aria-labelledby="modalImagesTitle"
+        aria-hidden="true" *ngIf="displayImagesPrelevement">
         <app-images [id]="prelevement.id"></app-images>
     </div>
+    <div class="modal fade" [id]="'modalImagesObservations-' + observation?.id" role="dialog"
+        aria-labelledby="modalImagesObservationsTitle" aria-hidden="true" *ngIf="displayImagesObservation">
+        <app-observation-images [id]="observation.id"></app-observation-images>
+    </div>
 </div>
+<app-footer></app-footer>

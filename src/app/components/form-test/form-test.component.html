@@ -1,0 +1,85 @@
+<form [formGroup]="dynamicForm2" (ngSubmit)="onSubmit2()">
+    <div class="card m-3">
+        <label class="form-label">titre</label>
+        <input type="text" class="form-control" formControlName="titre" />
+        <label class="form-label">description</label>
+        <textarea class="form-control" formControlName="description"></textarea>
+        <div class="card-body border-bottom">
+            <div class="row">
+                <div class="col-3 mb-3">
+                    <label class="form-label">Choisir élement</label>
+                    <select #selectedFieldType>
+                        <!--  (change)="onChangeTickets2($event)" -->
+                        <option value=""></option>
+                        <option *ngFor="let option of fieldTypeOptions" [value]="option">
+                            {{ option }}
+                        </option>
+                    </select>
+                    <a (click)="onChangeTickets2(selectedFieldType.value)">add field</a>
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let ticket of ticketFormGroups2; let i = index" class="list-group list-group-flush">
+            <div class="list-group-item">
+                <h5 class="card-title">Field {{ i + 1 }}</h5>
+                <div [formGroup]="ticket" class="row">
+                    <div class="col-6 mb-3" *ngIf="
+              ['text', 'chiffre', 'note', 'date'].includes(
+                ticket.controls['type'].value
+              )
+            ">
+                        <label class="form-label">label</label>
+                        <input type="text" formControlName="label" class="form-control" [ngClass]="{
+                'is-invalid': submitted && ticket.controls['label'].errors
+              }" />
+                        <div *ngIf="submitted && ticket.controls['label'].errors" class="invalid-feedback">
+                            <div *ngIf="ticket.controls['label'].errors['required']">
+                                label is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-3" *ngIf="
+              ['text', 'chiffre', 'note'].includes(
+                ticket.controls['type'].value
+              )
+            ">
+                        <label class="form-label">placeholder</label>
+                        <input type="text" formControlName="placeholder" class="form-control" [ngClass]="{
+                'is-invalid': submitted && ticket.controls['placeholder'].errors
+              }" />
+                        <div *ngIf="submitted && ticket.controls['placeholder'].errors" class="invalid-feedback">
+                            <div *ngIf="ticket.controls['placeholder'].errors['required']">
+                                placeholder is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-3" *ngIf="
+              ['text', 'chiffre', 'note', 'date'].includes(
+                ticket.controls['type'].value
+              )
+            ">
+                        <label class="form-label">required</label>
+                        <input type="checkbox" formControlName="required" class="form-control" value="false"
+                            [ngModel]="false" [ngClass]="{
+                'is-invalid': submitted && ticket.controls['required'].errors
+              }" />
+                        <div *ngIf="submitted && ticket.controls['required'].errors" class="invalid-feedback">
+                            <div *ngIf="ticket.controls['required'].errors['required']">
+                                required is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center border-top-0">
+            <button class="btn btn-primary me-1">Buy Tickets</button>
+            <button class="btn btn-secondary me-1" type="reset" (click)="onReset()">
+                Reset
+            </button>
+            <button class="btn btn-secondary" type="button" (click)="onClear()">
+                Clear
+            </button>
+        </div>
+    </div>
+</form>

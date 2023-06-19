@@ -9,7 +9,7 @@
 
 $(document).ready(function () {
 
-  var $primary = '#7367F0',
+  var $primary = '#59981A',
     $success = '#28C76F',
     $danger = '#EA5455',
     $warning = '#FF9F43',
@@ -20,7 +20,7 @@ $(document).ready(function () {
 
   // RTL Support
   var yaxis_opposite = false;
-  if($('html').data('textdirection') == 'rtl'){
+  if ($('html').data('textdirection') == 'rtl') {
     yaxis_opposite = true;
   }
 

@@ -9,7 +9,7 @@
 
 $(window).on("load", function () {
 
-  var $primary = '#7367F0';
+  var $primary = '#59981A';
   var $danger = '#EA5455';
   var $warning = '#FF9F43';
   var $info = '#0DCCE1';
@@ -551,7 +551,7 @@ $(window).on("load", function () {
   else {
     tour.cancel()
   }
-  if($("body").hasClass("horizontal-menu")){
+  if ($("body").hasClass("horizontal-menu")) {
     tour.cancel()
   }
   $(window).on("resize", function () {

@@ -329,7 +329,7 @@
   .active
   > a {
   background: #f8f8f8;
-  color: #7367f0;
+  color: #59981a;
   font-weight: 500;
 }
 .horizontal-menu
@@ -381,10 +381,10 @@
   > a {
   background: -webkit-linear-gradient(
     208deg,
-    #7367f0,
+    #59981a,
     rgba(115, 103, 240, 0.7)
   );
-  background: linear-gradient(-118deg, #7367f0, rgba(115, 103, 240, 0.7));
+  background: linear-gradient(-118deg, #59981a, rgba(115, 103, 240, 0.7));
   box-shadow: 0 0 6px 1px rgba(115, 103, 240, 0.6);
   color: #fff;
   border-radius: 4px;
@@ -397,7 +397,7 @@
   text-transform: uppercase;
 }
 .horizontal-menu .navbar-dark .nav-item.active > a {
-  border-bottom: 2px solid #7367f0;
+  border-bottom: 2px solid #59981a;
   background-color: #313c50;
 }
 .horizontal-menu .content.app-content .content-area-wrapper {

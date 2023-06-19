@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Image } from 'src/app/models/images';
 import { ImageService } from 'src/app/services/image.service';
 
@@ -7,20 +13,27 @@ import { ImageService } from 'src/app/services/image.service';
   templateUrl: './images.component.html',
   styleUrls: ['./images.component.css'],
 })
-export class ImagesComponent implements OnInit {
+export class ImagesComponent implements OnInit, OnChanges {
   @Input() id!: number;
 
-  images!: Image[];
+  images: Image[] = [];
 
-  constructor(private i: ImageService) {}
-
+  constructor(private imageService: ImageService) {}
   ngOnInit(): void {
-    this.getAll(this.id);
+    this.getAllImages(this.id);
   }
 
-  getAll(id: number) {
-    this.i.getAll(id).subscribe((data) => {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['id'] && !changes['id'].firstChange) {
+      this.getAllImages(this.id);
+    }
+  }
+
+  getAllImages(id: number) {
+    this.imageService.getAll(id).subscribe((data) => {
       this.images = data;
+      console.log('data => ', data);
+      console.log('images => ', this.images);
     });
   }
 }

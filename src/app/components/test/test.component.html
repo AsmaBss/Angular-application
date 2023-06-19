@@ -1,0 +1,31 @@
+<form [formGroup]="form">
+    <div *ngFor="let config of fieldConfigs; let i = index">
+        <label>{{ config.label }}</label>
+        <ng-container [ngSwitch]="config.type">
+            <!-- Dropdown field -->
+            <select *ngSwitchCase="'dropdown'" [formControlName]="config.name">
+                <option *ngFor="let option of config.options" [value]="option">{{ option }}</option>
+            </select>
+            <input *ngSwitchCase="'text'" [formControlName]="config.name" type="text">
+            <textarea *ngSwitchCase="'note'" [formControlName]="config.name"></textarea>
+            <input *ngSwitchCase="'chiffre'" [formControlName]="config.name" type="number">
+            <input *ngSwitchCase="'date'" [formControlName]="config.name" type="date">
+            <input *ngSwitchCase="'fichier'" [formControlName]="config.name" type="file">
+            <!-- Add more cases for additional field types -->
+        </ng-container>
+        <p>Field Name: {{ config.name }}</p>
+        <button (click)="removeFormControl(i)">Remove</button>
+    </div>
+</form>
+
+<div>
+    <!-- Dropdown button to add different field types -->
+    <div>
+        <select [(ngModel)]="selectedFieldType">
+            <option *ngFor="let option of fieldTypeOptions" [value]="option">{{ option }}</option>
+        </select>
+        <button (click)="addFormControl(selectedFieldType)">Add Field</button>
+    </div>
+</div>
+
+<button (click)="getFormData()">Get JSON Data</button>

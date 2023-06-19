@@ -8,16 +8,15 @@
         </div>
         <div class="modal-body">
             <div *ngIf="!images || images.length === 0">
-                <div align="center">Il n'y a pas des images</div>
+                <div align="center">Il n'y a pas d'images</div>
             </div>
             <div class="row" *ngIf="images.length != 0">
-
                 <div *ngFor="let i of images" class="col-md-4">
                     <img src="data:image/jpg;base64,{{i.image}}" width="300px" style="padding: 10px;" />
                 </div>
             </div>
         </div>
-        <div class=" modal-footer">
+        <div class="modal-footer">
         </div>
     </div>
 </div>

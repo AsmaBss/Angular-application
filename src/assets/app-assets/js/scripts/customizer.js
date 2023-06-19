@@ -11,7 +11,7 @@
   'use strict';
   // main menu active gradient colors object
   var themeColor = {
-    "theme-primary": "linear-gradient(118deg, #7367f0, rgba(115, 103, 240, 0.7))",
+    "theme-primary": "linear-gradient(118deg, #59981A, rgba(115, 103, 240, 0.7))",
     "theme-success": "linear-gradient(118deg, #28c76f, rgba(40, 199, 111, 0.7))",
     "theme-danger": "linear-gradient(118deg, #ea5455, rgba(234, 84, 85, 0.7))",
     "theme-info": "linear-gradient(118deg, #00cfe8, rgba(0, 207, 232, 0.7))",
@@ -30,7 +30,7 @@
   // colors for navbar header text of main menu
   var currentColor = {
     "theme-default": "#fff",
-    "theme-primary": "#7367f0",
+    "theme-primary": "#59981A",
     "theme-success": "#28c76f",
     "theme-danger": "#ea5455",
     "theme-info": "#00cfe8",
@@ -86,8 +86,8 @@
       selectedLogo = LogoPosition[selectedColor];
 
     // main-menu
-    if(body.data('menu')=="horizontal-menu"){
-      if(horizontalNavbar.find("li.sidebar-group-active:not(.dropdown-submenu)").length) {
+    if (body.data('menu') == "horizontal-menu") {
+      if (horizontalNavbar.find("li.sidebar-group-active:not(.dropdown-submenu)").length) {
         horizontalNavbar.find("li.sidebar-group-active:not(.dropdown-submenu)  > a").css(
           {
             "background": changeColor,
@@ -101,7 +101,7 @@
         );
       }
     }
-    else{
+    else {
       if (menuContent.find("li.active").length) {
         menuContent.find("li.active").css(
           {
@@ -111,7 +111,7 @@
         );
 
       }
-      else if($(".main-menu-content").find("li.sidebar-group-active").length) {
+      else if ($(".main-menu-content").find("li.sidebar-group-active").length) {
         $(".main-menu-content").find("li.sidebar-group-active > a").css(
           {
             "background": changeColor,
@@ -153,7 +153,7 @@
   $(".layout-name[data-layout='" + layout + "']").prop('checked', true);
 
 
-  collapseSidebar.on("click", function(){
+  collapseSidebar.on("click", function () {
     $(".modern-nav-toggle").trigger("click");
     $(".main-menu").trigger('mouseleave');
   });
@@ -190,26 +190,26 @@
   })
 
   /***** Navbar Type *****/
-  if(body.hasClass('horizontal-menu')){
+  if (body.hasClass('horizontal-menu')) {
     $('.collapse_menu').removeClass('d-none');
     $('.collapse_sidebar').addClass('d-none');
 
     $('.menu_type').removeClass('d-none');
     $('.navbar_type').addClass('d-none');
     // Hides hidden option in Horizontal layout
-    $('.navbar-type #navbar-hidden').closest('fieldset').parent('div').css('display','none');
+    $('.navbar-type #navbar-hidden').closest('fieldset').parent('div').css('display', 'none');
 
     // On Scroll navbar color on horizontal menu
-    $(window).scroll(function(){
-      if(body.hasClass('navbar-static')){
+    $(window).scroll(function () {
+      if (body.hasClass('navbar-static')) {
         var scroll = $(window).scrollTop();
         if (scroll > 65) {
-          $(".horizontal-menu .header-navbar.navbar-fixed").css({"background":"#fff", "box-shadow":"0 4px 20px 0 rgba(0,0,0,.05)"});
-          $(".horizontal-menu .horizontal-menu-wrapper.header-navbar").css("background" , "#fff");
+          $(".horizontal-menu .header-navbar.navbar-fixed").css({ "background": "#fff", "box-shadow": "0 4px 20px 0 rgba(0,0,0,.05)" });
+          $(".horizontal-menu .horizontal-menu-wrapper.header-navbar").css("background", "#fff");
         }
-        else{
-          $(".horizontal-menu .header-navbar.navbar-fixed").css({"background":"#f8f8f8", "box-shadow":"none"});
-          $(".horizontal-menu .horizontal-menu-wrapper.header-navbar").css("background" , "#fff");
+        else {
+          $(".horizontal-menu .header-navbar.navbar-fixed").css({ "background": "#f8f8f8", "box-shadow": "none" });
+          $(".horizontal-menu .horizontal-menu-wrapper.header-navbar").css("background", "#fff");
         }
       }
     })
@@ -222,12 +222,12 @@
   });
   // changes to Static navbar
   $("#navbar-static").on("click", function () {
-    if(body.hasClass('horizontal-menu')){
+    if (body.hasClass('horizontal-menu')) {
       horizontalNavbar
         .removeClass("d-none floating-nav fixed-top navbar-fixed");
       body.removeClass("navbar-hidden navbar-floating navbar-sticky").addClass("navbar-static");
     }
-    else{
+    else {
       navBarShadow.addClass("d-none");
       navbar
         .removeClass("d-none floating-nav fixed-top")
@@ -237,13 +237,13 @@
   });
   // change to floating navbar
   $("#navbar-floating").on("click", function () {
-    if(body.hasClass('horizontal-menu')){
+    if (body.hasClass('horizontal-menu')) {
       horizontalNavbar
         .removeClass("d-none fixed-top navbar-static-top")
         .addClass("floating-nav");
       body.removeClass("navbar-static navbar-hidden navbar-sticky").addClass("navbar-floating");
     }
-    else{
+    else {
       navBarShadow.removeClass("d-none");
       navbar
         .removeClass("d-none navbar-static-top fixed-top")
@@ -253,13 +253,13 @@
   });
   // changes to Static navbar
   $("#navbar-sticky").on("click", function () {
-    if(body.hasClass('horizontal-menu')){
+    if (body.hasClass('horizontal-menu')) {
       horizontalNavbar
         .removeClass("d-none floating-nav navbar-static-top navbar-fixed")
         .addClass("fixed-top");
       body.removeClass("navbar-static navbar-floating navbar-hidden").addClass("navbar-sticky");
     }
-    else{
+    else {
       navBarShadow.addClass("d-none");
       navbar
         .removeClass("d-none floating-nav navbar-static-top")

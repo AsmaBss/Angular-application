@@ -1,12 +1,13 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import 'leaflet-sidebar-v2';
 import { Observation } from 'src/app/models/observation';
 import { Parcelle } from 'src/app/models/parcelle';
 import { Passe } from 'src/app/models/passe';
-import { PlanSondage } from 'src/app/models/plan-sondage';
 import { Prelevement } from 'src/app/models/prelevement';
 import { Statut } from 'src/app/models/statut';
+import { AuthService } from 'src/app/services/auth.service';
 import { ObservationService } from 'src/app/services/observation.service';
 import { ParcelleService } from 'src/app/services/parcelle.service';
 import { PasseService } from 'src/app/services/passe.service';
@@ -30,25 +31,25 @@ export class HomeComponent implements AfterViewInit {
   isCheckedPlanSondage = false;
   isCheckedPrelevement = false;
   isCheckedObservation = false;
-  display: boolean = false;
+  displayImagesPrelevement: boolean = false;
+  displayImagesObservation: boolean = false;
 
   parcelles: Parcelle[] = [];
   parcelle!: Parcelle;
   prelevement!: Prelevement;
   passes!: Passe[];
-  observation: Observation | undefined;
+  observation!: Observation;
 
   constructor(
-    private parcelleService: ParcelleService,
     private planSondageService: PlanSondageService,
     private prelevementService: PrelevementService,
     private passeService: PasseService,
-    private obsercationService: ObservationService
+    private obsercationService: ObservationService,
+    private authService: AuthService
   ) {}
 
   ngAfterViewInit(): void {
     this.loadMap();
-    this.loadParcelles();
   }
 
   loadMap() {
@@ -73,16 +74,10 @@ export class HomeComponent implements AfterViewInit {
     mainLayer.addTo(this.map);
   }
 
-  loadParcelles() {
-    this.parcelleService.getAll().subscribe((data) => {
-      this.parcelles = data;
-    });
-  }
-
-  selectedParcelle(parcelle: Parcelle) {
-    this.parcelle = parcelle;
+  selectedParcelle(event: Parcelle) {
+    this.parcelle = event;
     if (this.parcelleLayer == undefined) {
-      const coordinates = parcelle.geometry.coordinates
+      const coordinates = event.geometry.coordinates
         .replace('MULTIPOLYGON (((', '')
         .replace(')))', '')
         .split(', ')
@@ -95,7 +90,7 @@ export class HomeComponent implements AfterViewInit {
       this.hideOptions = false;
       var sidebar = L.control
         .sidebar({
-          autopan: false,
+          autopan: true,
           closeButton: true,
           container: 'sidebar',
           position: 'left',
@@ -154,6 +149,7 @@ export class HomeComponent implements AfterViewInit {
                               this.prelevement = prelevement;
                               if (this.prelevement != undefined) {
                                 myDiv.style.display = 'block';
+                                this.closeDiv2();
                               }
                             }
                           })
@@ -170,6 +166,7 @@ export class HomeComponent implements AfterViewInit {
                               this.prelevement = prelevement;
                               if (this.prelevement != undefined) {
                                 myDiv.style.display = 'block';
+                                this.closeDiv2();
                               }
                             }
                           })
@@ -185,19 +182,14 @@ export class HomeComponent implements AfterViewInit {
                             if (myDiv) {
                               this.prelevement = prelevement;
                               if (this.prelevement != undefined) {
+                                this.closeDiv2();
                                 myDiv.style.display = 'block';
                               }
                             }
                           })
                       );
                     }
-                  } /* else {
-                    this.prelevementLayer.push(
-                      L.marker([parseFloat(lat), parseFloat(lng)]).setIcon(
-                        greyIcon
-                      )
-                    );
-                  }*/
+                  }
                 });
             });
         }
@@ -229,6 +221,7 @@ export class HomeComponent implements AfterViewInit {
               if (myDiv) {
                 this.observation = observation;
                 if (this.observation != undefined) {
+                  this.closeDiv();
                   myDiv.style.display = 'block';
                 }
               }
@@ -281,8 +274,12 @@ export class HomeComponent implements AfterViewInit {
     }
   }
 
-  onPress(id: number) {
-    this.display = true;
+  modalImagesPrelevement(id: number) {
+    this.displayImagesPrelevement = true;
+  }
+
+  modalImagesObservation(id: number) {
+    this.displayImagesObservation = true;
   }
 
   closeDiv() {
@@ -293,6 +290,10 @@ export class HomeComponent implements AfterViewInit {
   closeDiv2() {
     const myDiv = document.getElementById('details-container2');
     myDiv!.style.display = 'none';
+  }
+
+  public isLoggedIn() {
+    return this.authService.isLoggedIn();
   }
 }
 

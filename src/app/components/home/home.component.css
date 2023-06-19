@@ -7,19 +7,44 @@
 }
 
 .container {
+  margin: 20px;
   position: relative;
   width: 350px;
   height: 200px;
-  /*background-color: rgb(230, 230, 233);*/
-  /*margin-top: 30px;*/
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1),
     4px 4px 4px 4px rgba(0, 0, 0, 0.15);
   text-align: left;
   border-radius: 4px;
   box-sizing: border-box;
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+.container2 {
+  margin: 20px;
+  position: relative;
+  width: 350px;
+  height: 200px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1),
+    4px 4px 4px 4px rgba(0, 0, 0, 0.15);
+  text-align: left;
+  border-radius: 4px;
+  box-sizing: border-box;
+  max-height: 250px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.container::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: #aaa; /* or add it to the track */
+}
+
+/* Add a thumb */
+.container::-webkit-scrollbar-thumb {
+  background: #000;
 }
 
 .content-body {
@@ -27,18 +52,6 @@
   z-index: 1;
 }
 .details-container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 10px;
-  width: 25%;
-  height: 80%;
-  background-color: white;
-  opacity: 0.9;
-  z-index: 1000;
-}
-
-.details-container2 {
   position: absolute;
   top: 0;
   right: 0;

@@ -1,18 +1,18 @@
 /*=========================================================================================
-	File Name: form-maxlength.js
-	Description: Bootstrap-Maxlength uses a Twitter Bootstrap label to show a visual
-		feedback to the user about the maximum length of the field where the user is
-		inserting text. Uses the HTML5 attribute "maxlength" to work.
-	----------------------------------------------------------------------------------------
-	Item Name: Vuexy  - Vuejs, HTML & Laravel Admin Dashboard Template
-	Author: Pixinvent
-	Author URL: hhttp://www.themeforest.net/user/pixinvent
+  File Name: form-maxlength.js
+  Description: Bootstrap-Maxlength uses a Twitter Bootstrap label to show a visual
+    feedback to the user about the maximum length of the field where the user is
+    inserting text. Uses the HTML5 attribute "maxlength" to work.
+  ----------------------------------------------------------------------------------------
+  Item Name: Vuexy  - Vuejs, HTML & Laravel Admin Dashboard Template
+  Author: Pixinvent
+  Author URL: hhttp://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
 (function (window, document, $) {
   'use strict';
 
   var $danger = "#ea5455";
-  var $primary = "#7367f0";
+  var $primary = "#59981A";
   var $textcolor = "#4e5154";
 
   $(".char-textarea").on("keyup", function (event) {
