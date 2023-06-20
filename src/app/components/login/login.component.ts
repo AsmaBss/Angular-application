@@ -15,10 +15,14 @@ export class LoginComponent implements OnInit {
   login(f: any) {
     this.authService.login(f).subscribe(
       (data) => {
-        this.authService.setRoles(data.user.roles);
+        this.authService.setUser(data.user);
         this.authService.setToken(data.jwtToken);
         const role = data.user.roles[0].type;
-        if (role === 'ADMIN' || role === 'USER') {
+        if (
+          role === 'ADMIN' ||
+          role === 'SUPERVISOR' ||
+          role === 'SIMPLE_USER'
+        ) {
           this.router.navigate(['/Accueil']);
         }
       },

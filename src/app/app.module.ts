@@ -29,6 +29,7 @@ import { AuthGuard } from './interceptor/auth.guard';
 import { AuthService } from './services/auth.service';
 import { TestComponent } from './components/test/test.component';
 import { FormTestComponent } from './components/form-test/form-test.component';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,13 @@ import { FormTestComponent } from './components/form-test/form-test.component';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('jwtToken');
+        },
+      },
+    }),
   ],
   providers: [
     AuthGuard,
@@ -66,6 +74,7 @@ import { FormTestComponent } from './components/form-test/form-test.component';
       multi: true,
     },
     AuthService,
+    JwtHelperService,
   ],
   bootstrap: [AppComponent],
 })

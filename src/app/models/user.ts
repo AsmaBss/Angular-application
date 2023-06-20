@@ -2,6 +2,6 @@ export class User {
   id!: number;
   firstname!: string;
   lastname!: string;
-  eail!: string;
+  email!: string;
   password!: string;
 }

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Parcelle } from 'src/app/models/parcelle';
+import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ParcelleService } from 'src/app/services/parcelle.service';
 
@@ -13,6 +14,7 @@ export class HeaderComponent implements OnInit {
   @Output() parcelle = new EventEmitter<Parcelle>();
   parcelles: Parcelle[] = [];
   message!: string;
+  currentUser!: User;
 
   constructor(
     private parcelleService: ParcelleService,
@@ -21,20 +23,8 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.forUser();
     this.loadParcelles();
-  }
-
-  forUser() {
-    this.authService.forUser().subscribe(
-      (data) => {
-        console.log(data);
-        this.message = data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.getUserDetails();
   }
 
   loadParcelles() {
@@ -50,5 +40,9 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.clear();
     this.router.navigate(['/']);
+  }
+
+  getUserDetails() {
+    this.currentUser = this.authService.getUser();
   }
 }
