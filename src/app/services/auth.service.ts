@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Parcelle } from '../models/parcelle';
 
 @Injectable({
   providedIn: 'root',
@@ -15,24 +16,23 @@ export class AuthService {
     'No-Auth': 'True',
   });
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
+  constructor(private http: HttpClient) {}
 
   login(f: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/authenticate`, f, {
       headers: this.requestHeader,
     });
   }
-  register(f: User): Observable<User> {
-    return this.http.post<any>(`${this.apiUrl}/register`, f);
+  register(f: User, id: number): Observable<User> {
+    return this.http.post<any>(`${this.apiUrl}/register/` + id, f);
   }
-
-  forUser() {
-    return this.http.get(`${this.apiUrl}/forUser`, {
-      responseType: 'text',
+  addUser(user: User, parcelles: Parcelle[], id: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/User/add/` + id, {
+      user: user,
+      parcelles: parcelles,
     });
   }
 
-  //
   setUser(user: any) {
     localStorage.setItem('user', JSON.stringify(user));
   }

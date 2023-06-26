@@ -1,0 +1,91 @@
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content" style="width: 700px;height: 500px;">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addParcelle">Ajouter un utilisateur</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="float-child1">
+                <form #f="ngForm">
+                    <div class="form-label-group">
+                        <select id="key" name="key" class="form-control" required #role="ngModel" [(ngModel)]="selected"
+                            (change)="showDiv()">
+                            <option class="form-control" *ngFor="let key of keys" [value]="key">
+                                {{typeRole[key]}}
+                            </option>
+                        </select>
+                        <span *ngIf="(f.submitted || role.touched) && role.errors?.['required']"
+                            style="color: red; font-size: 0.9rem;">
+                            Il faut ajouter un role
+                        </span>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="text" class="form-control" placeholder="Prénom" required name="firstname"
+                            #firstname="ngModel" ngModel />
+                        <span *ngIf="(f.submitted || firstname.touched) && firstname.errors?.['required']"
+                            style="color:red;font-size: 0.9rem;">Il faut ajouter le prénom</span>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="text" class="form-control" placeholder="Nom" required name="lastname"
+                            #lastname="ngModel" ngModel />
+                        <span *ngIf="(f.submitted || lastname.touched) && lastname.errors?.['required']"
+                            style="color:red;font-size: 0.9rem;">Il faut ajouter le nom</span>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="email" class="form-control" placeholder="Email"
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required name="email" #email="ngModel"
+                            ngModel />
+                        <span *ngIf="(f.submitted || email.touched) && email.errors?.['required']"
+                            style="color:red;font-size: 0.9rem;">Il faut ajouter l'adresse email</span>
+                        <div [hidden]="!email.errors?.['pattern']" style="color:red;font-size: 0.9rem;">
+                            Adresse email invalide
+                        </div>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="password" class="form-control" placeholder="Mot de passe" required name="password"
+                            #password="ngModel" ngModel minlength="6" />
+                        <span *ngIf="(f.submitted || password.touched) && password.errors?.['required']"
+                            style="color:red;font-size: 0.9rem;">Il faut ajouter le mot de passe</span>
+                        <div [hidden]="!password.errors?.['minlength']" style="color:red;font-size: 0.9rem;">
+                            Le mot de passe doit être au moins de 6 caractères
+                        </div>
+                    </div>
+                    <button type="submit" value="save" [disabled]="f.invalid" (click)="addUser(f.value)"
+                        class="btn btn-primary float-right btn-inline mb-50" style="margin-bottom: 10px;">
+                        Ajouter
+                    </button>
+                </form>
+            </div>
+            <div class="float-child2" [hidden]="hide">
+                <div class="blue">List des parcelles</div>
+                <div *ngFor="let p of parcelles">
+                    <label>
+                        <input type="checkbox" [value]="p" (change)="selectedParcelle(p)"> {{ p.nom }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class=" modal-footer">
+        </div>
+    </div>
+</div>
+
+<!-- BEGIN: Vendor JS-->
+<script src="../../../assets/app-assets/vendors/js/vendors.min.js"></script>
+<!-- BEGIN Vendor JS-->
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="../../../assets/app-assets/vendors/js/tables/ag-grid/ag-grid-community.min.noStyle.js"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="../../../assets/app-assets/js/core/app-menu.js"></script>
+<script src="../../../assets/app-assets/js/core/app.js"></script>
+<script src="../../../assets/app-assets/js/scripts/components.js"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="../../../assets/app-assets/js/scripts/pages/app-user.js"></script>
+<!-- END: Page JS-->

@@ -15,14 +15,13 @@ export class ParcelleService {
   getAll(): Observable<Parcelle[]> {
     return this.http.get<Parcelle[]>(`${this.apiUrl}/Parcelle/show`);
   }
-
+  getByUser(id: number): Observable<Parcelle[]> {
+    return this.http.get<Parcelle[]>(`${this.apiUrl}/Parcelle/show/user/` + id);
+  }
   add(f: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/Parcelle/add`, f);
   }
-
-  getBySecurisation(id: number): Observable<Parcelle> {
-    return this.http.get<Parcelle>(
-      `${this.apiUrl}/Parcelle/show/securisation/` + id
-    );
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/Parcelle/delete/` + id);
   }
 }

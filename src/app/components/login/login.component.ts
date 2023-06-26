@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
+  errorMessage!: string;
+
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
@@ -27,7 +29,13 @@ export class LoginComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error);
+        if (error.status === 401) {
+          this.errorMessage = error.error.message;
+        } else if (error.status === 403) {
+          this.errorMessage = error.error.message;
+        } else {
+          this.errorMessage = error.error.message;
+        }
       }
     );
   }

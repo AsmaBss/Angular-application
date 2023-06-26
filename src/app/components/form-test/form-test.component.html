@@ -24,7 +24,7 @@
                 <h5 class="card-title">Field {{ i + 1 }}</h5>
                 <div [formGroup]="ticket" class="row">
                     <div class="col-6 mb-3" *ngIf="
-              ['text', 'chiffre', 'note', 'date'].includes(
+              ['Input', 'chiffre', 'TextArea', 'date'].includes(
                 ticket.controls['type'].value
               )
             ">
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="col-6 mb-3" *ngIf="
-              ['text', 'chiffre', 'note'].includes(
+              ['Input', 'chiffre', 'TextArea'].includes(
                 ticket.controls['type'].value
               )
             ">
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div class="col-6 mb-3" *ngIf="
-              ['text', 'chiffre', 'note', 'date'].includes(
+              ['Input', 'chiffre', 'TextArea', 'date'].includes(
                 ticket.controls['type'].value
               )
             ">

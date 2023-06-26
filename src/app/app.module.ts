@@ -22,7 +22,6 @@ import { PrelevementComponent } from './components/prelevement/prelevement.compo
 import { PlanSondageComponent } from './components/plan-sondage/plan-sondage.component';
 import { ObservationImagesComponent } from './components/observation-images/observation-images.component';
 import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
 import { RouterModule } from '@angular/router';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { AuthGuard } from './interceptor/auth.guard';
@@ -30,6 +29,10 @@ import { AuthService } from './services/auth.service';
 import { TestComponent } from './components/test/test.component';
 import { FormTestComponent } from './components/form-test/form-test.component';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { AddUserComponent } from './components/add-user/add-user.component';
+import { ListUsersComponent } from './components/list-users/list-users.component';
+import { ListParcellesComponent } from './components/list-parcelles/list-parcelles.component';
+import { UpdateUserComponent } from './components/update-user/update-user.component';
 
 @NgModule({
   declarations: [
@@ -45,9 +48,12 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
     PlanSondageComponent,
     ObservationImagesComponent,
     LoginComponent,
-    RegisterComponent,
     TestComponent,
     FormTestComponent,
+    AddUserComponent,
+    ListUsersComponent,
+    ListParcellesComponent,
+    UpdateUserComponent,
   ],
   imports: [
     BrowserModule,

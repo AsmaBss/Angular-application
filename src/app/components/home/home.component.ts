@@ -1,5 +1,4 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import 'leaflet-sidebar-v2';
 import { Observation } from 'src/app/models/observation';
@@ -9,7 +8,6 @@ import { Prelevement } from 'src/app/models/prelevement';
 import { Statut } from 'src/app/models/statut';
 import { AuthService } from 'src/app/services/auth.service';
 import { ObservationService } from 'src/app/services/observation.service';
-import { ParcelleService } from 'src/app/services/parcelle.service';
 import { PasseService } from 'src/app/services/passe.service';
 import { PlanSondageService } from 'src/app/services/plan-sondage.service';
 import { PrelevementService } from 'src/app/services/prelevement.service';

@@ -4,11 +4,11 @@
         <div class="content-body">
             <div id="sidebar" class="leaflet-sidebar" [hidden]="hideOptions">
                 <div class="leaflet-sidebar-tabs">
-                    <ul role="tablist">
-                        <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                    <ul>
+                        <li><a href="#home"><i class="fa fa-bars"></i></a></li>
                     </ul>
                 </div>
-                <div class="leaflet-sidebar-content active">
+                <div class="leaflet-sidebar-content">
                     <div class="leaflet-sidebar-pane active" id="home">
                         <div class="vs-checkbox-con vs-checkbox-success" style="margin:1rem;">
                             <input type="checkbox" [(ngModel)]="isCheckedParcelle"
@@ -62,63 +62,80 @@
             <div id="map" style="height: 670px;z-index: 1;">
             </div>
             <div id="details-container" class="details-container" style="display: none;">
-                <div class="card" style="height: 600px;">
+                <div class=" card" style="height: 600px;">
                     <div class=" card-header">
-                        <div class="card-title">Détails du prélèvement</div>
+                        <div class="card-title">Détail du prélèvement</div>
                         <button type="button" class="close" (click)="closeDiv()">
                             <span aria-hidden="true">
                                 <i class="feather icon-x"></i></span>
                         </button>
                     </div>
                     <div class="card-body">
-                        <div class="col-12">
-                            <div style="float: left;" class="col-6"> Numéro : </div>
-                            <div style="float: right;" class="col-6">
-                                {{ prelevement?.numero }}
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div style="float: left;" class="col-6"> Munition Référence : </div>
-                            <div style="float: right;" class="col-6">
-                                {{ prelevement?.munitionReference }}
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div style="float: left;" class="col-6"> Côte Plateforme : </div>
-                            <div style="float: right;" class="col-6"> {{
-                                prelevement?.cotePlateforme }} </div>
-                        </div>
-                        <div class="col-12">
-                            <div style="float: left;" class="col-6"> Profondeur à sécuriser : </div>
-                            <div style="float: right;" class="col-6"> {{
-                                prelevement?.profondeurASecuriser }} </div>
-                        </div>
-                        <div class="col-12">
-                            <div style="float: left;" class="col-6"> Côte à sécuriser : </div>
-                            <div style="float: right;" class="col-6"> {{
-                                prelevement?.coteASecuriser }} </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="col-12">Remarques : </div>
-                        </div>
-                        <div class="col-12">
-                            <div style="float: left;" class="col-12">
-                                {{ prelevement?.remarques }}</div>
-                        </div>
-                        <hr style="margin-top: 40px;">
-                        <div class="col-12">
-                            <div style="float: left;" class="col-6"> Images </div>
-                            <div style="float: right;" class="col-6">
-                                <a [attr.data-target]="'#modalImages-' + prelevement?.id" data-toggle="modal"
-                                    (click)="modalImagesPrelevement(prelevement.id)">
-                                    <i class="feather icon-eye"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <hr style="margin-top: 40px;">
-                        <div class="col-12">
-                            <div class="col-12">Passes </div>
-                        </div>
+                        <table class="col-12">
+                            <tbody>
+                                <tr>
+                                    <th class="font-weight-bold">Numéro</th>
+                                    <td style="align-content: center; margin-top: 20px;">{{ prelevement?.numero }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">Munition Référence</td>
+                                    <td style="align-content: center; margin-top: 20px;">
+                                        {{ prelevement?.munitionReference }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">Côte Plateforme</td>
+                                    <td style="align-content: center; margin-top: 20px;">{{
+                                        prelevement?.cotePlateforme }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">Profondeur à sécuriser</td>
+                                    <td style="align-content: center; margin-top: 20px;">{{
+                                        prelevement?.profondeurASecuriser }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">Côte à sécuriser</td>
+                                    <td style="align-content: center; margin-top: 20px;">{{
+                                        prelevement?.coteASecuriser }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold" colspan="2">Remarques</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="align-content: center; margin-top: 20px;">{{
+                                        prelevement?.remarques }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <hr style="margin-top: 10px;width: 300px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">Images</td>
+                                    <td style="align-content: center;align-content: center;">
+                                        <a [attr.data-target]="'#modalImages-' + prelevement?.id" data-toggle="modal"
+                                            (click)="modalImagesPrelevement(prelevement.id)">
+                                            <i class="feather icon-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <hr style="margin-top: 10px;width: 300px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold" colspan="2">Passes</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
                         <div class="container">
                             <div class="box">
                                 <div *ngFor="let p of passes">
@@ -144,35 +161,41 @@
             <div id="details-container2" class="details-container" style="display: none;">
                 <div class="card" style="height: 600px;">
                     <div class=" card-header">
-                        <div class="card-title">Observations</div>
+                        <div class="card-title">Détail de l'observation</div>
                         <button type="button" class="close" (click)="closeDiv2()">
                             <span aria-hidden="true">
                                 <i class="feather icon-x"></i></span>
                         </button>
                     </div>
                     <div class="card-body">
-                        <div class="col-12">
-                            <div style="float: left;" class="col-6"> Nom de l'observation : </div>
-                            <div style="float: right;" class="col-6"> {{
-                                observation?.nom }} </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="col-12">Description : </div>
-                        </div>
-                        <div class="col-12">
-                            <div style="float: left;" class="col-12">
-                                {{ observation?.description }}</div>
-                        </div>
-                        <hr style="margin-top: 40px;">
-                        <div class="col-12">
-                            <div style="float: left;" class="col-6"> Images </div>
-                            <div style="float: right;" class="col-6">
-                                <a [attr.data-target]="'#modalImagesObservations-' + observation?.id"
-                                    data-toggle="modal" (click)="modalImagesObservation(observation.id)">
-                                    <i class="feather icon-eye"></i>
-                                </a>
-                            </div>
-                        </div>
+                        <table class="col-12">
+                            <tbody>
+                                <tr>
+                                    <th class="font-weight-bold">Nom</th>
+                                    <td style="align-content: center; margin-top: 20px;">{{ observation?.nom }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="font-weight-bold">Description</th>
+                                    <td style="align-content: center; margin-top: 20px;">{{ observation?.description }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <hr style="margin-top: 10px;width: 300px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold">Images</td>
+                                    <td style="align-content: center;align-content: center;">
+                                        <a [attr.data-target]="'#modalImagesObservations-' + observation?.id"
+                                            data-toggle="modal" (click)="modalImagesObservation(observation.id)">
+                                            <i class="feather icon-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

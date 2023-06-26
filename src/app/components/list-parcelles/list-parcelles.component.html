@@ -1,0 +1,40 @@
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content" style="width: 700px; height: 500px">
+        <div class="modal-header">
+            <h5 class="modal-title" id="listParcelle">List des parcelles</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="parcelles.length == 0" align="center">
+                Il n'y a pas encore des parcelles
+            </div>
+            <div *ngIf="parcelles.length != 0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nom parcelle</th>
+                                <th>Type</th>
+                                <th>Nombre de sondage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of parcelles">
+                                <td>{{ p.nom }}</td>
+                                <td>{{ p.type }}</td>
+                                <th>Nbr</th>
+                                <td>
+                                    <a data-toggle="modal" data-target="#delete" (click)="deleteParcelle(p.id)"><i
+                                            class="feather icon-trash-2"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer"></div>
+    </div>
+</div>

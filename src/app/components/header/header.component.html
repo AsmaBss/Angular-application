@@ -7,12 +7,10 @@
                 <div class="content-header-left col-md-8 col-12">
                     <ul class=" nav navbar-nav float-left">
                         <li class="dropdown dropdown-user nav-item">
-                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" data-toggle="dropdown">
                                 <span>
-                                    <a (click)="logout()" style="margin-right: 30px;">
-
-                                        <i class="feather icon-log-out" style="font-size:large;"></i>
-
+                                    <a (click)="logout()" style="margin-right: 10px;">
+                                        <i class="ficon feather icon-log-out" style="font-size:large;"></i>
                                     </a>
                                 </span>
                                 <div class="user-nav d-sm-flex d-none">
@@ -20,6 +18,25 @@
                                         {{ currentUser.firstname }} {{ currentUser.lastname }} </span>
                                     <span class="user-status">{{ currentUser.email }}</span>
                                 </div>
+
+                            </a>
+                        </li>
+                        <li class="nav-item d-none d-lg-block">
+                            <a class="nav-link nav-link-expand" [attr.data-target]="'#listUsers'" data-toggle="modal"
+                                [hidden]="role.toString() !== 'ADMIN'" (click)="modalListUsers()">
+                                <i class="ficon feather icon-users"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item d-none d-lg-block">
+                            <a class="nav-link nav-link-expand" [attr.data-target]="'#addUser'" data-toggle="modal"
+                                [hidden]="role.toString() !== 'ADMIN'">
+                                <i class="ficon feather icon-user-plus"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item d-none d-lg-block">
+                            <a class="nav-link nav-link-expand" [attr.data-target]="'#listParcelle'" data-toggle="modal"
+                                [hidden]="role.toString() !== 'ADMIN'" (click)="modalListParcelles()">
+                                <i class="ficon feather icon-list"></i>
                             </a>
                         </li>
                     </ul>
@@ -29,7 +46,7 @@
                         <div class="btn-group">
                             <div class="dropdown" style="margin-right: 10px;">
                                 <div class="btn-group dropdown">
-                                    <button type="button" class="btn btn-success">Séléctionner une parcelle</button>
+                                    <div class="btn btn-success">Séléctionner une parcelle</div>
                                     <button type="button"
                                         class="btn btn-success dropdown-toggle dropdown-toggle-split waves-effect waves-light"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,5 +77,16 @@
 </nav>
 <div class="modal fade" [id]="'addParcelle'" role="dialog" aria-labelledby="addParcelleTitle" aria-hidden="true">
     <app-parcelle></app-parcelle>
+</div>
+<div class="modal fade" [id]="'listParcelle'" role="dialog" aria-labelledby="listParcelleTitle" aria-hidden="true"
+    *ngIf="displayListParcelles">
+    <app-list-parcelles></app-list-parcelles>
+</div>
+<div class="modal fade" [id]="'addUser'" role="dialog" aria-labelledby="addUserTitle" aria-hidden="true">
+    <app-add-user></app-add-user>
+</div>
+<div class="modal fade" [id]="'listUsers'" role="dialog" aria-labelledby="listUsersTitle" aria-hidden="true"
+    *ngIf="displayListUsers">
+    <app-list-users></app-list-users>
 </div>
 <!-- END: Header-->

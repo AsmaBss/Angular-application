@@ -1,17 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FieldType } from '../../form/field-type';
-import { FieldConfig } from '../test/field-config';
-import { TextElement } from 'src/app/form/text-element';
-import { NoteElement } from 'src/app/form/note-element';
-import { NumberElement } from 'src/app/form/number-element';
-import { ImageElement } from 'src/app/form/image-element';
 import { FormService } from 'src/app/services/form.service';
 import { Form } from 'src/app/models/form';
 //fieldTypeOptions = Object.values(FieldType);
@@ -52,16 +41,24 @@ export class FormTestComponent implements OnInit {
     return this.t2.controls as FormGroup[];
   }
 
+  getKeyByValue(value: string) {
+    return Object.keys(FieldType).filter(
+      (key) => FieldType[key as keyof typeof FieldType] === value
+    )[0];
+  }
+
   onChangeTickets2(e: any) {
     console.log('click', e);
+    var key = this.getKeyByValue(e);
+    console.log(key);
 
-    if (['text', 'chiffre', 'note'].includes(e)) {
+    if (['Text', 'chiffre', 'Note'].includes(e)) {
       this.t2.push(
         this.formBuilder2.group({
           label: ['', Validators.required],
           placeholder: ['', [Validators.required]],
           required: [, [Validators.required]],
-          type: e,
+          type: key,
         })
       );
     } else if (e === 'date') {
@@ -69,7 +66,7 @@ export class FormTestComponent implements OnInit {
         this.formBuilder2.group({
           label: ['', Validators.required],
           required: ['false', [Validators.required]],
-          type: e,
+          type: key,
         })
       );
     }

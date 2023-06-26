@@ -44,7 +44,8 @@ export class ParcelleComponent implements OnInit {
     formData.append('prjFile', this.parcellePrjFile);
     console.log('form =>', formData);
 
-    this.parcelleService.add(formData).subscribe();
-    window.location.reload();
+    this.parcelleService.add(formData).subscribe(() => {
+      window.location.reload();
+    });
   }
 }

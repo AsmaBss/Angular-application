@@ -1,0 +1,53 @@
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content" style="width: 700px;height: 500px;">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addParcelle">List des utilisateurs</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="users.length == 0" align="center">
+                Il n'y a pas encore des utilisateurs
+            </div>
+            <div *ngIf="users.length != 0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Prénom</th>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let u of users">
+                                <td>{{ u.firstname }}</td>
+                                <td>{{ u.lastname }}</td>
+                                <th>{{ u.email }}</th>
+                                <th>{{ u.roles[0].type }}</th>
+                                <td>
+                                    <a (click)="deleteUser(u.id)"><i class="feather icon-trash-2"></i></a>
+                                </td>
+                                <td>
+                                    <a class="nav-link nav-link-expand" [attr.data-target]="'#updateUser'+ u.id"
+                                        data-toggle="modal" [hidden]="u.roles[0].type.toString() != 'SIMPLE_USER'"
+                                        (click)="modalUpdate(u.id)">
+                                        <i class="feather icon-edit"></i>
+                                    </a>
+                                </td>
+                                <div class="modal fade" [id]="'updateUser' + u.id" role="dialog"
+                                    aria-labelledby="updateUserTitle" *ngIf="displayUpdate">
+                                    <app-update-user [id]="u.id"></app-update-user>
+                                </div>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class=" modal-footer">
+        </div>
+    </div>
+</div>
