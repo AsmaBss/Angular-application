@@ -21,6 +21,16 @@
 
                             </a>
                         </li>
+                        <div class="form-group breadcrum-right" style="margin-bottom: 0px; margin-top: 10px;">
+                            <div class="btn-group" style="margin-right: 10px;">
+                                <button type="button"
+                                    class="btn btn-success waves-effect waves-light">Visualisation</button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button"
+                                    class="btn btn-success waves-effect waves-light">Administration</button>
+                            </div>
+                        </div>
                         <li class="nav-item d-none d-lg-block">
                             <a class="nav-link nav-link-expand" [attr.data-target]="'#listUsers'" data-toggle="modal"
                                 [hidden]="role.toString() !== 'ADMIN'" (click)="modalListUsers()">

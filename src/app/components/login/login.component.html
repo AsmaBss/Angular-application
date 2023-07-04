@@ -44,7 +44,8 @@
                                                     <fieldset class="form-label-group position-relative has-icon-left">
                                                         <input type="password" class="form-control"
                                                             placeholder="Password" required name="password"
-                                                            #password="ngModel" ngModel minlength="6" />
+                                                            #password="ngModel" ngModel minlength="6"
+                                                            (input)="onPasswordChange()" />
                                                         <div class="form-control-position">
                                                             <i class="feather icon-lock"></i>
                                                         </div>
@@ -83,20 +84,7 @@
         </div>
     </div>
 
-    <!-- BEGIN: Vendor JS-->
-    <script src="./assets/app-assets/vendors/js/vendors.min.js"></script>
-    <!-- BEGIN Vendor JS-->
-
     <!-- BEGIN: Page Vendor JS-->
     <script src="./assets/app-assets/vendors/js/ui/jquery.sticky.js"></script>
     <!-- END: Page Vendor JS-->
-
-    <!-- BEGIN: Theme JS-->
-    <script src="./assets/app-assets/js/core/app-menu.js"></script>
-    <script src="./assets/app-assets/js/core/app.js"></script>
-    <script src="./assets/app-assets/js/scripts/components.js"></script>
-    <!-- END: Theme JS-->
-
-    <!-- BEGIN: Page JS-->
-    <!-- END: Page JS-->
 </body>

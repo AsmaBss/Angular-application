@@ -11,7 +11,6 @@ import {
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { GoogleMapsModule } from '@angular/google-maps';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SecurisationComponent } from './components/securisation/securisation.component';
@@ -60,7 +59,6 @@ import { UpdateUserComponent } from './components/update-user/update-user.compon
     AppRoutingModule,
     HttpClientModule,
     HttpClientJsonpModule,
-    GoogleMapsModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,

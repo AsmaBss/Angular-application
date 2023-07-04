@@ -29,14 +29,23 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadParcelles();
     this.getUserDetails();
+    this.loadParcelles();
   }
 
   loadParcelles() {
-    this.parcelleService.getAll().subscribe((data) => {
-      this.parcelles = data;
-    });
+    if (
+      this.role.toString() == 'ADMIN' ||
+      this.role.toString() == 'SUPERVISOR'
+    ) {
+      this.parcelleService.getAll().subscribe((data) => {
+        this.parcelles = data;
+      });
+    } else {
+      this.parcelleService.getByUser(this.currentUser.id).subscribe((data) => {
+        this.parcelles = data;
+      });
+    }
   }
 
   selectedParcelle(parcelle: Parcelle) {
