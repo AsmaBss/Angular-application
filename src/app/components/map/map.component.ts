@@ -128,7 +128,6 @@ export class MapComponent implements AfterViewInit {
 
   getAll(id: number) {
     this.pr.getAllBySecurisation(id).subscribe((data) => {
-      console.log(data);
       this.prelevements = data;
     });
   }

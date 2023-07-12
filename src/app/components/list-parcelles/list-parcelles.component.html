@@ -24,7 +24,7 @@
                             <tr *ngFor="let p of parcelles">
                                 <td>{{ p.nom }}</td>
                                 <td>{{ p.type }}</td>
-                                <th>Nbr</th>
+                                <th>{{ p.nbr }}</th>
                                 <td>
                                     <a data-toggle="modal" data-target="#delete" (click)="deleteParcelle(p.id)"><i
                                             class="feather icon-trash-2"></i></a>

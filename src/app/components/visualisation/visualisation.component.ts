@@ -1,27 +1,25 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
+
 import * as L from 'leaflet';
+
 import 'leaflet-sidebar-v2';
 import { Observation } from 'src/app/models/observation';
 import { Parcelle } from 'src/app/models/parcelle';
 import { Passe } from 'src/app/models/passe';
 import { Prelevement } from 'src/app/models/prelevement';
 import { Statut } from 'src/app/models/statut';
-import { TypeRole } from 'src/app/models/type-role';
-import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ObservationService } from 'src/app/services/observation.service';
 import { PasseService } from 'src/app/services/passe.service';
 import { PlanSondageService } from 'src/app/services/plan-sondage.service';
 import { PrelevementService } from 'src/app/services/prelevement.service';
-import { UserService } from 'src/app/services/user.service';
-import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  selector: 'app-visualisation',
+  templateUrl: './visualisation.component.html',
+  styleUrls: ['./visualisation.component.css'],
 })
-export class HomeComponent implements AfterViewInit, OnInit {
+export class VisualisationComponent implements AfterViewInit {
   private map!: L.Map;
   private parcelleLayer!: L.Polygon;
   private planSondageLayer: L.Marker[] = [];
@@ -36,9 +34,6 @@ export class HomeComponent implements AfterViewInit, OnInit {
   displayImagesPrelevement: boolean = false;
   displayImagesObservation: boolean = false;
 
-  users: User[] = [];
-  displayUpdate: boolean = false;
-
   parcelles: Parcelle[] = [];
   parcelle!: Parcelle;
   prelevement!: Prelevement;
@@ -47,49 +42,16 @@ export class HomeComponent implements AfterViewInit, OnInit {
 
   type: string = 'Visualisation';
 
-  currentUser!: User;
-  role!: TypeRole;
-
   constructor(
     private planSondageService: PlanSondageService,
     private prelevementService: PrelevementService,
     private passeService: PasseService,
     private obsercationService: ObservationService,
-    private authService: AuthService,
-    private userService: UserService
+    private authService: AuthService
   ) {}
-  ngOnInit(): void {
-    this.getUserDetails();
-  }
 
   ngAfterViewInit(): void {
-    if (this.type === 'Visualisation') {
-      setTimeout(() => {
-        this.loadMap();
-      }, 0);
-    }
-  }
-
-  getType(event: string) {
-    this.type = event;
-    if (event === 'Visualisation') {
-      setTimeout(() => {
-        this.loadMap();
-      }, 0);
-    }
-    if (this.type === 'Administration') {
-      setTimeout(() => {
-        this.hideOptions = true;
-        this.loadUsers();
-      }, 0);
-    }
-  }
-
-  loadUsers() {
-    this.userService.getAll().subscribe((data) => {
-      data.shift();
-      this.users = data;
-    });
+    this.loadMap();
   }
 
   loadMap() {
@@ -115,29 +77,28 @@ export class HomeComponent implements AfterViewInit, OnInit {
   }
 
   selectedParcelle(event: Parcelle) {
-    //this.hideOptions = false;
     this.parcelle = event;
-    //if (this.parcelleLayer == undefined) {
-    const coordinates = event.geometry.coordinates
-      .replace('MULTIPOLYGON (((', '')
-      .replace(')))', '')
-      .split(', ')
-      .map((coord: any) => {
-        const [lng, lat] = coord.split(' ');
-        return [parseFloat(lat), parseFloat(lng)];
-      });
-    this.parcelleLayer = L.polygon(coordinates).addTo(this.map);
-    this.map.fitBounds(this.parcelleLayer.getBounds());
-    this.hideOptions = false;
-    var sidebar = L.control
-      .sidebar({
-        autopan: true,
-        closeButton: true,
-        container: 'sidebar',
-        position: 'left',
-      })
-      .addTo(this.map);
-    //}
+    if (this.parcelleLayer == undefined) {
+      const coordinates = event.geometry.coordinates
+        .replace('MULTIPOLYGON (((', '')
+        .replace(')))', '')
+        .split(', ')
+        .map((coord: any) => {
+          const [lng, lat] = coord.split(' ');
+          return [parseFloat(lat), parseFloat(lng)];
+        });
+      this.parcelleLayer = L.polygon(coordinates).addTo(this.map);
+      this.map.fitBounds(this.parcelleLayer.getBounds());
+      this.hideOptions = false;
+      var sidebar = L.control
+        .sidebar({
+          autopan: true,
+          closeButton: true,
+          container: 'sidebar',
+          position: 'left',
+        })
+        .addTo(this.map);
+    }
     this.loadPlanSondage();
     this.loadPrelevement();
     this.loadObservations();
@@ -336,13 +297,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
   public isLoggedIn() {
     return this.authService.isLoggedIn();
   }
-
-  getUserDetails() {
-    this.currentUser = this.authService.getUser();
-    this.role = this.currentUser.roles[0].type;
-  }
 }
-
 const greyIcon = L.icon({
   iconUrl:
     'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',

@@ -1,5 +1,6 @@
-<app-header (parcelle)="selectedParcelle($event)"></app-header>
-<div class="app-content content">
+<app-header (parcelle)="selectedParcelle($event)" (type)="getType($event)"></app-header>
+
+<div class="app-content content" *ngIf="type === 'Visualisation'">
     <div class="content-wrapper">
         <div class="content-body">
             <div id="sidebar" class="leaflet-sidebar" [hidden]="hideOptions">
@@ -50,22 +51,25 @@
                             </span>
                             <span class="">Observations</span>
                         </div>
-                        <button type="button" class="btn btn-flat-success mr-1 mb-1 waves-effect waves-light"><a
-                                [attr.data-target]="'#addPlanSondage'" data-toggle="modal"
-                                style="background-color: transparent;border: 0 solid transparent;padding: 0;">
-                                <i class="feather icon-plus"></i> Plan Sondage
-                            </a>
-                        </button>
+                        <div>
+                            <!-- [hidden]="role.toString() !== 'ADMIN'"-->
+                            <button type="button" class="btn btn-flat-success mr-1 mb-1 waves-effect waves-light"><a
+                                    [attr.data-target]="'#addPlanSondage'" data-toggle="modal"
+                                    *ngIf="role.toString() == 'ADMIN'"
+                                    style="background-color: transparent;border: 0 solid transparent;padding: 0;">
+                                    <i class="feather icon-plus"></i> Plan Sondage
+                                </a>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div id="map" style="height: 670px;z-index: 1;">
-            </div>
+            <div id="map" style="height: 670px; z-index: 1;"></div>
             <div id="details-container" class="details-container" style="display: none;">
                 <div class=" card" style="height: 600px;">
                     <div class=" card-header">
                         <div class="card-title">Détail du prélèvement</div>
-                        <button type="button" class="close" (click)="closeDiv()">
+                        <button type="button" class="close" (click)="closeDiv('Prelevement')">
                             <span aria-hidden="true">
                                 <i class="feather icon-x"></i></span>
                         </button>
@@ -162,7 +166,7 @@
                 <div class="card" style="height: 600px;">
                     <div class=" card-header">
                         <div class="card-title">Détail de l'observation</div>
-                        <button type="button" class="close" (click)="closeDiv2()">
+                        <button type="button" class="close" (click)="closeDiv('Observation')">
                             <span aria-hidden="true">
                                 <i class="feather icon-x"></i></span>
                         </button>
@@ -199,7 +203,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <div class="modal fade" [id]="'addParcelle'" role="dialog" aria-labelledby="addParcelleTitle" aria-hidden="true">
@@ -218,4 +221,6 @@
         <app-observation-images [id]="observation.id"></app-observation-images>
     </div>
 </div>
-<app-footer></app-footer>
+<div class="app-content content" *ngIf="type === 'Administration'">
+    <app-administration></app-administration>
+</div>

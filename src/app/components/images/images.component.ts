@@ -32,8 +32,6 @@ export class ImagesComponent implements OnInit, OnChanges {
   getAllImages(id: number) {
     this.imageService.getAll(id).subscribe((data) => {
       this.images = data;
-      console.log('data => ', data);
-      console.log('images => ', this.images);
     });
   }
 }

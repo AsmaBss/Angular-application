@@ -1,0 +1,67 @@
+<div class="content-wrapper">
+    <div class="content-body">
+        <div class="row" id="basic-table">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Liste des utilisateurs</h4>
+                        <button type="button" class="btn btn-success waves-effect waves-light"
+                            [hidden]="role.toString() !== 'ADMIN'">
+                            <a [attr.data-target]="'#addUser'" data-toggle="modal">
+                                <i class="feather icon-plus"></i> Utilisateur
+                            </a>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div *ngIf="users.length == 0" align="center">
+                                Il n'y a pas encore des utilisateurs
+                            </div>
+                            <div *ngIf="users.length != 0">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Prénom</th>
+                                                <th>Nom</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let u of users">
+                                                <td>{{ u.firstname }}</td>
+                                                <td>{{ u.lastname }}</td>
+                                                <th>{{ u.email }}</th>
+                                                <th>{{ u.roles[0].type }}</th>
+                                                <td>
+                                                    <a (click)="deleteUser(u.id)"><i
+                                                            class="feather icon-trash-2"></i></a>
+                                                </td>
+                                                <td>
+                                                    <a class="nav-link nav-link-expand"
+                                                        [attr.data-target]="'#updateUser'+ u.id" data-toggle="modal"
+                                                        [hidden]="u.roles[0].type.toString() != 'SIMPLE_USER'"
+                                                        (click)="modalUpdate(u.id)">
+                                                        <i class="feather icon-edit"></i>
+                                                    </a>
+                                                </td>
+                                                <div class="modal fade" [id]="'updateUser' + u.id" role="dialog"
+                                                    aria-labelledby="updateUserTitle" *ngIf="displayUpdate">
+                                                    <app-update-user [id]="u.id"></app-update-user>
+                                                </div>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" [id]="'addUser'" role="dialog" aria-labelledby="addUserTitle" aria-hidden="true">
+    <app-add-user (verif)="userAdded($event)"></app-add-user>
+</div>

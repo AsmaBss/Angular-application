@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onPasswordChange() {
-    console.log('onPasswordChange');
     this.errorMessage = '';
   }
 
@@ -35,13 +34,10 @@ export class LoginComponent implements OnInit {
       },
       (error) => {
         if (error.status === 401) {
-          console.log(error.error.message);
           this.errorMessage = error.error.message;
         } else if (error.status === 403) {
-          console.log(error.error.message);
           this.errorMessage = error.error.message;
         } else {
-          console.log(error.error.message);
           this.errorMessage = error.error.message;
         }
       }

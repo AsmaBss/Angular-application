@@ -1,6 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { lineOffset } from '@turf/turf';
 import { Parcelle } from 'src/app/models/parcelle';
 import { TypeRole } from 'src/app/models/type-role';
 import { User } from 'src/app/models/user';
@@ -14,6 +19,9 @@ import { ParcelleService } from 'src/app/services/parcelle.service';
 })
 export class HeaderComponent implements OnInit {
   @Output() parcelle = new EventEmitter<Parcelle>();
+  @Output() type = new EventEmitter<string>();
+
+  headerData!: string;
   parcelles: Parcelle[] = [];
   message!: string;
   currentUser!: User;
@@ -21,6 +29,12 @@ export class HeaderComponent implements OnInit {
 
   displayListParcelles: boolean = false;
   displayListUsers: boolean = false;
+
+  listParcelles: boolean = false;
+  addParcelle: boolean = true;
+
+  veriff: boolean = false;
+  dropdown: boolean = true;
 
   constructor(
     private parcelleService: ParcelleService,
@@ -68,5 +82,24 @@ export class HeaderComponent implements OnInit {
 
   modalListUsers() {
     this.displayListUsers = true;
+  }
+
+  visualisationButton() {
+    this.listParcelles = false;
+    this.dropdown = true;
+    this.addParcelle = true;
+    this.type.emit('Visualisation');
+  }
+  administrationButton() {
+    this.addParcelle = false;
+    this.dropdown = false;
+    this.listParcelles = true;
+    this.type.emit('Administration');
+  }
+
+  verif(event: boolean) {
+    if ((this.veriff = true)) {
+      this.loadParcelles();
+    }
   }
 }

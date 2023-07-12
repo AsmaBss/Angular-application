@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-    <div class="modal-content" style="width: 700px;height: 500px;">
+    <div class="modal-content" style="width: 700px;height: 500px;" #myModal>
         <div class="modal-header">
             <h5 class="modal-title" id="addParcelle">Ajouter un utilisateur</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -53,7 +53,8 @@
                         </div>
                     </div>
                     <button type="submit" value="save" [disabled]="f.invalid" (click)="addUser(f.value)"
-                        class="btn btn-primary float-right btn-inline mb-50" style="margin-bottom: 10px;">
+                        class="btn btn-primary float-right btn-inline mb-50" style="margin-bottom: 10px;"
+                        data-dismiss="modal">
                         Ajouter
                     </button>
                 </form>

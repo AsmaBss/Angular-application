@@ -17,7 +17,6 @@ export class SecurisationComponent {
 
   getAll() {
     this.s.getAll().subscribe((data) => {
-      console.log(data);
       this.securisations = data;
     });
   }

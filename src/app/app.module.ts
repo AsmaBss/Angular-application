@@ -32,6 +32,8 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { ListUsersComponent } from './components/list-users/list-users.component';
 import { ListParcellesComponent } from './components/list-parcelles/list-parcelles.component';
 import { UpdateUserComponent } from './components/update-user/update-user.component';
+import { VisualisationComponent } from './components/visualisation/visualisation.component';
+import { AdministrationComponent } from './components/administration/administration.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +55,8 @@ import { UpdateUserComponent } from './components/update-user/update-user.compon
     ListUsersComponent,
     ListParcellesComponent,
     UpdateUserComponent,
+    VisualisationComponent,
+    AdministrationComponent,
   ],
   imports: [
     BrowserModule,

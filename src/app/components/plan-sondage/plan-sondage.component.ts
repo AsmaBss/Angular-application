@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Parcelle } from 'src/app/models/parcelle';
 import { PlanSondageService } from 'src/app/services/plan-sondage.service';
 
@@ -15,7 +16,10 @@ export class PlanSondageComponent implements OnInit {
   parcelleDbfFile!: File;
   parcellePrjFile!: File;
 
-  constructor(private planSondageService: PlanSondageService) {}
+  constructor(
+    private planSondageService: PlanSondageService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -46,6 +50,14 @@ export class PlanSondageComponent implements OnInit {
     formData.append('prjFile', this.parcellePrjFile);
 
     this.planSondageService.add(formData, this.parcelle.id).subscribe();
-    window.location.reload();
+    const currentUrl = this.router.url;
+    this.router
+      .navigateByUrl('/Accueil', {
+        skipLocationChange: false,
+        onSameUrlNavigation: 'reload',
+      })
+      .then(() => {
+        this.router.navigate([currentUrl]);
+      });
   }
 }

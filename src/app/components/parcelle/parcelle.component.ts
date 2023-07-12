@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { ParcelleService } from 'src/app/services/parcelle.service';
 import { PlanSondageService } from 'src/app/services/plan-sondage.service';
 
@@ -8,12 +9,17 @@ import { PlanSondageService } from 'src/app/services/plan-sondage.service';
   styleUrls: ['./parcelle.component.css'],
 })
 export class ParcelleComponent implements OnInit {
+  @Output() verify = new EventEmitter<boolean>();
+
   parcelleShpFile!: File;
   parcelleShxFile!: File;
   parcelleDbfFile!: File;
   parcellePrjFile!: File;
 
-  constructor(private parcelleService: ParcelleService) {}
+  constructor(
+    private parcelleService: ParcelleService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -42,10 +48,23 @@ export class ParcelleComponent implements OnInit {
     formData.append('shxFile', this.parcelleShxFile);
     formData.append('dbfFile', this.parcelleDbfFile);
     formData.append('prjFile', this.parcellePrjFile);
-    console.log('form =>', formData);
 
-    this.parcelleService.add(formData).subscribe(() => {
-      window.location.reload();
-    });
+    this.parcelleService.add(formData).subscribe(
+      (data) => {
+        this.verify.emit(true);
+        const currentUrl = this.router.url;
+        this.router
+          .navigateByUrl('/Accueil', {
+            skipLocationChange: false,
+            onSameUrlNavigation: 'reload',
+          })
+          .then(() => {
+            this.router.navigate([currentUrl]);
+          });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }

@@ -33,8 +33,6 @@ export class ObservationImagesComponent implements OnInit, OnChanges {
   getAllImages(id: number) {
     this.imageService.getByObservation(id).subscribe((data) => {
       this.images = data;
-      console.log('data => ', data);
-      console.log('images => ', this.images);
     });
   }
 }

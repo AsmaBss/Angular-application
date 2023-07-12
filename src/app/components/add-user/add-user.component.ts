@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Parcelle } from 'src/app/models/parcelle';
 import { TypeRole } from 'src/app/models/type-role';
@@ -12,6 +18,8 @@ import { ParcelleService } from 'src/app/services/parcelle.service';
   styleUrls: ['./add-user.component.css'],
 })
 export class AddUserComponent implements OnInit {
+  @Output() verif = new EventEmitter<boolean>();
+
   typeRole: any = TypeRole;
   keys: string[] = [];
   selected!: TypeRole;
@@ -21,7 +29,8 @@ export class AddUserComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private parcelleService: ParcelleService
+    private parcelleService: ParcelleService,
+    private router: Router
   ) {
     this.keys = Object.keys(this.typeRole);
   }
@@ -54,18 +63,35 @@ export class AddUserComponent implements OnInit {
 
   addUser(f: User) {
     var id!: number;
-
     if (this.selected.toString() == 'ADMIN') {
       id = 1;
       this.selectedParcelles = [];
       this.authService.addUser(f, this.selectedParcelles, id).subscribe(() => {
-        window.location.reload();
+        this.verif.emit(true);
+        const currentUrl = this.router.url;
+        this.router
+          .navigateByUrl('/Accueil', {
+            skipLocationChange: false,
+            onSameUrlNavigation: 'reload',
+          })
+          .then(() => {
+            this.router.navigate([currentUrl]);
+          });
       });
     } else if (this.selected.toString() == 'SUPERVISOR') {
       id = 2;
       this.selectedParcelles = [];
       this.authService.addUser(f, this.selectedParcelles, id).subscribe(() => {
-        window.location.reload();
+        this.verif.emit(true);
+        const currentUrl = this.router.url;
+        this.router
+          .navigateByUrl('/Accueil', {
+            skipLocationChange: false,
+            onSameUrlNavigation: 'reload',
+          })
+          .then(() => {
+            this.router.navigate([currentUrl]);
+          });
       });
     } else if (this.selected.toString() == 'SIMPLE_USER') {
       id = 3;
@@ -76,7 +102,16 @@ export class AddUserComponent implements OnInit {
         };
       });
       this.authService.addUser(f, this.selectedParcelles, id).subscribe(() => {
-        window.location.reload();
+        this.verif.emit(true);
+        const currentUrl = this.router.url;
+        this.router
+          .navigateByUrl('/Accueil', {
+            skipLocationChange: false,
+            onSameUrlNavigation: 'reload',
+          })
+          .then(() => {
+            this.router.navigate([currentUrl]);
+          });
       });
     }
   }
