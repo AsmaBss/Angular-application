@@ -5,6 +5,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Parcelle } from 'src/app/models/parcelle';
 import { TypeRole } from 'src/app/models/type-role';
@@ -18,6 +19,7 @@ import { ParcelleService } from 'src/app/services/parcelle.service';
   styleUrls: ['./add-user.component.css'],
 })
 export class AddUserComponent implements OnInit {
+  @ViewChild('f') userForm!: NgForm;
   @Output() verif = new EventEmitter<boolean>();
 
   typeRole: any = TypeRole;
@@ -61,7 +63,7 @@ export class AddUserComponent implements OnInit {
     }
   }
 
-  addUser(f: User) {
+  addUser(f: User, form: any) {
     var id!: number;
     if (this.selected.toString() == 'ADMIN') {
       id = 1;
@@ -76,6 +78,7 @@ export class AddUserComponent implements OnInit {
           })
           .then(() => {
             this.router.navigate([currentUrl]);
+            form.reset();
           });
       });
     } else if (this.selected.toString() == 'SUPERVISOR') {
@@ -91,6 +94,7 @@ export class AddUserComponent implements OnInit {
           })
           .then(() => {
             this.router.navigate([currentUrl]);
+            form.reset();
           });
       });
     } else if (this.selected.toString() == 'SIMPLE_USER') {
@@ -111,8 +115,14 @@ export class AddUserComponent implements OnInit {
           })
           .then(() => {
             this.router.navigate([currentUrl]);
+            form.reset();
           });
       });
     }
+  }
+
+  close() {
+    this.userForm.resetForm();
+    this.hide = true;
   }
 }

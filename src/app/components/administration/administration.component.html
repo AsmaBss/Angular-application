@@ -40,14 +40,15 @@
                                                 </td>
                                                 <td>
                                                     <a class="nav-link nav-link-expand"
-                                                        [attr.data-target]="'#updateUser'+ u.id" data-toggle="modal"
+                                                        [attr.data-target]="'#updateUser-'+ u.id" data-toggle="modal"
                                                         [hidden]="u.roles[0].type.toString() != 'SIMPLE_USER'"
                                                         (click)="modalUpdate(u.id)">
                                                         <i class="feather icon-edit"></i>
                                                     </a>
                                                 </td>
-                                                <div class="modal fade" [id]="'updateUser' + u.id" role="dialog"
-                                                    aria-labelledby="updateUserTitle" *ngIf="displayUpdate">
+                                                <div class="modal fade" [id]="'updateUser-' + u.id" role="dialog"
+                                                    aria-labelledby="updateUserTitle" aria-hidden="true"
+                                                    *ngIf="id == u.id">
                                                     <app-update-user [id]="u.id"></app-update-user>
                                                 </div>
                                             </tr>

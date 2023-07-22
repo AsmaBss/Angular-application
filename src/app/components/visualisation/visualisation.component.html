@@ -198,11 +198,11 @@
     </div>
 </div>
 <div class="modal fade" [id]="'addParcelle'" role="dialog" aria-labelledby="addParcelleTitle" aria-hidden="true">
-    <app-parcelle></app-parcelle>
+    <app-add-parcelle></app-add-parcelle>
 </div>
 <div class="modal fade" [id]="'addPlanSondage'" tabindex="-1" role="dialog" aria-labelledby="addPlanSondageTitle"
     aria-hidden="true">
-    <app-plan-sondage [parcelle]="parcelle"></app-plan-sondage>
+    <app-add-plan-sondage [parcelle]="parcelle"></app-add-plan-sondage>
 </div>
 <div class="modal fade" [id]="'modalImages-' + prelevement?.id" role="dialog" aria-labelledby="modalImagesTitle"
     aria-hidden="true" *ngIf="displayImagesPrelevement">

@@ -48,10 +48,10 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                     </button>
                                     <div *ngIf="parcelles != []">
-                                        <div *ngFor="let p of parcelles">
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton100"
-                                                (click)="selectedParcelle(p)">
-                                                <a class="dropdown-item">{{ p.nom }}</a>
+                                        <div>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton100">
+                                                <a class="dropdown-item" *ngFor="let p of parcelles"
+                                                    (click)="selectedParcelle(p)">{{ p.nom }}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -81,11 +81,11 @@
     </div>
 </nav>
 <div class="modal fade" [id]="'addParcelle'" role="dialog" aria-labelledby="addParcelleTitle" aria-hidden="true">
-    <app-parcelle (verify)="verif($event)"></app-parcelle>
+    <app-add-parcelle (verify)="verifAdd($event)"></app-add-parcelle>
 </div>
 <div class="modal fade" [id]="'listParcelle'" role="dialog" aria-labelledby="listParcelleTitle" aria-hidden="true"
     *ngIf="displayListParcelles">
-    <app-list-parcelles></app-list-parcelles>
+    <app-list-parcelles [allParcelles]="allParcelles" (verify)="verifDelete($event)"></app-list-parcelles>
 </div>
 <div class="modal fade" [id]="'listUsers'" role="dialog" aria-labelledby="listUsersTitle" aria-hidden="true"
     *ngIf="displayListUsers">

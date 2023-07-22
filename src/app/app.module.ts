@@ -14,11 +14,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SecurisationComponent } from './components/securisation/securisation.component';
-import { ParcelleComponent } from './components/parcelle/parcelle.component';
 import { MapComponent } from './components/map/map.component';
 import { ImagesComponent } from './components/images/images.component';
 import { PrelevementComponent } from './components/prelevement/prelevement.component';
-import { PlanSondageComponent } from './components/plan-sondage/plan-sondage.component';
 import { ObservationImagesComponent } from './components/observation-images/observation-images.component';
 import { LoginComponent } from './components/login/login.component';
 import { RouterModule } from '@angular/router';
@@ -34,6 +32,8 @@ import { ListParcellesComponent } from './components/list-parcelles/list-parcell
 import { UpdateUserComponent } from './components/update-user/update-user.component';
 import { VisualisationComponent } from './components/visualisation/visualisation.component';
 import { AdministrationComponent } from './components/administration/administration.component';
+import { AddParcelleComponent } from './components/add-parcelle/add-parcelle.component';
+import { AddPlanSondageComponent } from './components/add-plan-sondage/add-plan-sondage.component';
 
 @NgModule({
   declarations: [
@@ -41,12 +41,10 @@ import { AdministrationComponent } from './components/administration/administrat
     FooterComponent,
     HomeComponent,
     HeaderComponent,
-    ParcelleComponent,
     SecurisationComponent,
     MapComponent,
     ImagesComponent,
     PrelevementComponent,
-    PlanSondageComponent,
     ObservationImagesComponent,
     LoginComponent,
     TestComponent,
@@ -57,6 +55,8 @@ import { AdministrationComponent } from './components/administration/administrat
     UpdateUserComponent,
     VisualisationComponent,
     AdministrationComponent,
+    AddParcelleComponent,
+    AddPlanSondageComponent,
   ],
   imports: [
     BrowserModule,

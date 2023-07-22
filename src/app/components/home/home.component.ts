@@ -50,6 +50,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
   currentUser!: User;
   role!: TypeRole;
 
+  veriff: boolean = false;
+
   constructor(
     private planSondageService: PlanSondageService,
     private prelevementService: PrelevementService,
@@ -333,13 +335,15 @@ export class HomeComponent implements AfterViewInit, OnInit {
     }
   }
 
-  public isLoggedIn() {
-    return this.authService.isLoggedIn();
-  }
-
   getUserDetails() {
     this.currentUser = this.authService.getUser();
     this.role = this.currentUser.roles[0].type;
+  }
+
+  verif(event: boolean) {
+    if ((this.veriff = true)) {
+      this.loadPlanSondage();
+    }
   }
 }
 

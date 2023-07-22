@@ -1,8 +1,8 @@
 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-    <div class="modal-content" style="width: 700px;height: 500px;" #myModal>
+    <div class="modal-content" style="width: 700px;height: 500px;">
         <div class="modal-header">
-            <h5 class="modal-title" id="addParcelle">Ajouter un utilisateur</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <h5 class="modal-title" id="addUser">Ajouter un utilisateur</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="close()">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -52,7 +52,7 @@
                             Le mot de passe doit être au moins de 6 caractères
                         </div>
                     </div>
-                    <button type="submit" value="save" [disabled]="f.invalid" (click)="addUser(f.value)"
+                    <button type="submit" [disabled]="f.invalid" value="save" (click)="addUser(f.value, f)"
                         class="btn btn-primary float-right btn-inline mb-50" style="margin-bottom: 10px;"
                         data-dismiss="modal">
                         Ajouter

@@ -11,6 +11,7 @@ import { TypeRole } from 'src/app/models/type-role';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ParcelleService } from 'src/app/services/parcelle.service';
+import { PlanSondageService } from 'src/app/services/plan-sondage.service';
 
 @Component({
   selector: 'app-header',
@@ -33,11 +34,12 @@ export class HeaderComponent implements OnInit {
   listParcelles: boolean = false;
   addParcelle: boolean = true;
 
-  veriff: boolean = false;
+  allParcelles: any[] = [];
   dropdown: boolean = true;
 
   constructor(
     private parcelleService: ParcelleService,
+    private planSondageService: PlanSondageService,
     private authService: AuthService,
     private router: Router
   ) {}
@@ -54,6 +56,18 @@ export class HeaderComponent implements OnInit {
     ) {
       this.parcelleService.getAll().subscribe((data) => {
         this.parcelles = data;
+        //
+        this.allParcelles = data.map((item) => ({
+          id: item.id,
+          nom: item.nom,
+          type: item.type,
+          nbr: null,
+        }));
+        this.allParcelles.forEach((p) => {
+          this.planSondageService.nbr(p.id).subscribe((nbr) => {
+            p.nbr = nbr;
+          });
+        });
       });
     } else {
       this.parcelleService.getByUser(this.currentUser.id).subscribe((data) => {
@@ -97,8 +111,13 @@ export class HeaderComponent implements OnInit {
     this.type.emit('Administration');
   }
 
-  verif(event: boolean) {
-    if ((this.veriff = true)) {
+  verifAdd(event: boolean) {
+    if (event == true) {
+      this.loadParcelles();
+    }
+  }
+  verifDelete(event: boolean) {
+    if (event == true) {
       this.loadParcelles();
     }
   }

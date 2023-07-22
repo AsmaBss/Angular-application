@@ -1,8 +1,27 @@
 <form [formGroup]="form">
+    <div class="input-field">
+        <input matInput type="email" name="email" placeholder="Email" formControlName="email">
+    </div>
+    <div class="input-field">
+        <input matInput type="password" placeholder="Password" formControlName="password">
+    </div>
+    <div *ngFor="let control of  rolesFieldAsFormArray.controls ;let i = index;" formArrayName='roles'>
+        <div [formGroupName]="i">
+            <div class="input-field">
+                <input matInput type="text" placeholder="Role" formControlName="role">
+            </div>
+            <button class="button" type="button" (click)="remove(i)">Remove</button>
+        </div>
+    </div>
+    <button class="button" (click)="addControl()"> Add New Role</button>
+    <button class="button" type="submit" (click)="formValue()" [disabled]="form.invalid">
+        Login
+    </button>
+</form>
+<!--<form [formGroup]="form">
     <div *ngFor="let config of fieldConfigs; let i = index">
         <label>{{ config.label }}</label>
         <ng-container [ngSwitch]="config.type">
-            <!-- Dropdown field -->
             <select *ngSwitchCase="'dropdown'" [formControlName]="config.name">
                 <option *ngFor="let option of config.options" [value]="option">{{ option }}</option>
             </select>
@@ -11,7 +30,6 @@
             <input *ngSwitchCase="'chiffre'" [formControlName]="config.name" type="number">
             <input *ngSwitchCase="'date'" [formControlName]="config.name" type="date">
             <input *ngSwitchCase="'fichier'" [formControlName]="config.name" type="file">
-            <!-- Add more cases for additional field types -->
         </ng-container>
         <p>Field Name: {{ config.name }}</p>
         <button (click)="removeFormControl(i)">Remove</button>
@@ -19,7 +37,6 @@
 </form>
 
 <div>
-    <!-- Dropdown button to add different field types -->
     <div>
         <select [(ngModel)]="selectedFieldType">
             <option *ngFor="let option of fieldTypeOptions" [value]="option">{{ option }}</option>
@@ -28,4 +45,4 @@
     </div>
 </div>
 
-<button (click)="getFormData()">Get JSON Data</button>
+<button (click)="getFormData()">Get JSON Data</button>-->

@@ -1,20 +1,37 @@
 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
     <div class="modal-content" style="width: 700px;height: 500px;">
         <div class="modal-header">
-            <h5 class="modal-title" id="addParcelle">Modifier les parcelles de l'utilisateur</h5>
+            <h5 class="modal-title" id="updateUserTitle">Modifier les parcelles de l'utilisateur</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-
-            <div class="blue">List des parcelles</div>
-            <div *ngFor="let p of parcelles">
+            <div class="blue" style="font-size: medium; font-weight: 600;">List des parcelles de cet utilisateur
+            </div>
+            <div *ngIf="hisParcelles.length == 0" align="center">
+                Il n'y a pas encore des parcelles à cette utilisateur
+            </div>
+            <div *ngFor="let hp of hisParcelles">
                 <label>
-                    <input type="checkbox" [value]="p" (change)="selectedParcelle(p)" [checked]="p"> {{ p.nom }}
+                    <input type="checkbox" [value]="hp" (change)="selectedParcelle(hp)" [checked]="isSelected(hp)"> {{
+                    hp.nom }}
                 </label>
             </div>
-
+            <div class="blue" style="font-size: medium; font-weight: 600;">List des parcelles</div>
+            <div *ngIf="parcelles.length == 0" align="center">
+                Il n'y a pas encore des parcelles
+            </div>
+            <div *ngFor="let p of parcelles">
+                <label>
+                    <input type="checkbox" [value]="p" (change)="selectedParcelle(p)" [checked]="isSelected(p)"> {{
+                    p.nom }}
+                </label>
+            </div>
+            <button type="submit" value="save" (click)="save()" class="btn btn-primary float-right btn-inline mb-50"
+                style="margin-bottom: 10px;" data-dismiss="modal">
+                Sauvegarder
+            </button>
         </div>
         <div class=" modal-footer">
         </div>

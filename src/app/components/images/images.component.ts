@@ -19,6 +19,7 @@ export class ImagesComponent implements OnInit, OnChanges {
   images: Image[] = [];
 
   constructor(private imageService: ImageService) {}
+
   ngOnInit(): void {
     this.getAllImages(this.id);
   }

@@ -1,4 +1,4 @@
-<form [formGroup]="dynamicForm2" (ngSubmit)="onSubmit2()">
+<form [formGroup]="dynamicForm1" (ngSubmit)="onSubmit2()">
     <div class="card m-3">
         <label class="form-label">titre</label>
         <input type="text" class="form-control" formControlName="titre" />
@@ -19,64 +19,96 @@
                 </div>
             </div>
         </div>
-        <div *ngFor="let ticket of ticketFormGroups2; let i = index" class="list-group list-group-flush">
+        <div *ngFor="let field of fieldsFormGroups; let i = index" class="list-group list-group-flush">
             <div class="list-group-item">
-                <h5 class="card-title">Field {{ i + 1 }}</h5>
-                <div [formGroup]="ticket" class="row">
+                <h5 class="card-title">Elément {{ i+1 }}</h5>
+                <div [formGroup]="field" class="row">
                     <div class="col-6 mb-3" *ngIf="
-              ['Input', 'chiffre', 'TextArea', 'date'].includes(
-                ticket.controls['type'].value
+              ['Input', 'TextArea', 'Date', 'RadioButton', 'Switch', 'Checkbox', 'Select'].includes(
+                field.controls['type'].value
               )
             ">
-                        <label class="form-label">label</label>
+                        <label class="form-label">Label</label>
                         <input type="text" formControlName="label" class="form-control" [ngClass]="{
-                'is-invalid': submitted && ticket.controls['label'].errors
+                'is-invalid': submitted && field.controls['label'].errors
               }" />
-                        <div *ngIf="submitted && ticket.controls['label'].errors" class="invalid-feedback">
-                            <div *ngIf="ticket.controls['label'].errors['required']">
-                                label is required
+                        <div *ngIf="submitted && field.controls['label'].errors" class="invalid-feedback">
+                            <div *ngIf="field.controls['label'].errors['required']">
+                                Ce champs est obligatoire
                             </div>
                         </div>
                     </div>
                     <div class="col-6 mb-3" *ngIf="
-              ['Input', 'chiffre', 'TextArea'].includes(
-                ticket.controls['type'].value
+              ['Input', 'TextArea'].includes(
+                field.controls['type'].value
               )
             ">
-                        <label class="form-label">placeholder</label>
+                        <label class="form-label">Placeholder</label>
                         <input type="text" formControlName="placeholder" class="form-control" [ngClass]="{
-                'is-invalid': submitted && ticket.controls['placeholder'].errors
+                'is-invalid': submitted && field.controls['placeholder'].errors
               }" />
-                        <div *ngIf="submitted && ticket.controls['placeholder'].errors" class="invalid-feedback">
-                            <div *ngIf="ticket.controls['placeholder'].errors['required']">
-                                placeholder is required
+                        <div *ngIf="submitted && field.controls['placeholder'].errors" class="invalid-feedback">
+                            <div *ngIf="field.controls['placeholder'].errors['required']">
+                                Ce champs est obligatoire
                             </div>
                         </div>
                     </div>
                     <div class="col-6 mb-3" *ngIf="
-              ['Input', 'chiffre', 'TextArea', 'date'].includes(
-                ticket.controls['type'].value
+              ['Input', 'TextArea', 'Date'].includes(
+                field.controls['type'].value
               )
             ">
-                        <label class="form-label">required</label>
+                        <label class="form-label">Champs obligatoire</label>
                         <input type="checkbox" formControlName="required" class="form-control" value="false"
                             [ngModel]="false" [ngClass]="{
-                'is-invalid': submitted && ticket.controls['required'].errors
+                'is-invalid': submitted && field.controls['required'].errors
               }" />
-                        <div *ngIf="submitted && ticket.controls['required'].errors" class="invalid-feedback">
-                            <div *ngIf="ticket.controls['required'].errors['required']">
-                                required is required
+                        <div *ngIf="submitted && field.controls['required'].errors" class="invalid-feedback">
+                            <div *ngIf="field.controls['required'].errors['required']">
+                                Ce champs est obligatoire
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-3" *ngIf="
+              ['Input', 'TextArea', 'Switch', 'Radio', 'Checkbox', 'Select'].includes(
+                field.controls['type'].value
+              )
+            ">
+                        <label class="form-label">Valeur par défaut</label>
+                        <input type="text" formControlName="value" class="form-control" />
+                    </div>
+                    <div class="col-6 mb-3" *ngIf="
+              ['RadioButton', 'Checkbox', 'Select'].includes(
+                field.controls['type'].value
+              )
+            ">
+                        <label class="form-label">Items -- {{i}}</label>
+                        <a class="button" (click)="addItem(i)"> + item</a>
+                        <div *ngFor="let item of itemsFormGroupsForField(i); let j = index;">
+                            <div [formGroup]="item" class="input-group">
+                                <input type="text" formControlName="label" class="form-control" placeholder="Role Label"
+                                    [ngClass]="{
+                                'is-invalid': submitted && item.controls['label'].errors
+                              }" />
+                                <div *ngIf="submitted && item.controls['label'].errors" class="invalid-feedback">
+                                    <div *ngIf="item.controls['label'].errors['required']">This field is required</div>
+                                </div>
+                                <input type="text" formControlName="value" class="form-control" placeholder="Role Label"
+                                    [ngClass]="{
+                                'is-invalid': submitted && item.controls['value'].errors
+                              }" />
+                                <button class="button" type="button" (click)="remove(i,j)">Remove</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card-footer text-center border-top-0">
-            <button class="btn btn-primary me-1" style="margin-right: 15px;">Sauvegarder</button>
-            <button class="btn btn-secondary me-1" type="reset" (click)="onReset()">
-                Réinitialiser
-            </button>
-        </div>
+    </div>
+    <div class="card-footer text-center border-top-0">
+        <button class="btn btn-primary me-1" style="margin-right: 15px;">Sauvegarder</button>
+        <button class="btn btn-secondary me-1" type="reset" (click)="onReset()">
+            Réinitialiser
+        </button>
     </div>
 </form>

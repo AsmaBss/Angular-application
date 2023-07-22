@@ -1,8 +1,9 @@
 export enum FieldType {
   Input = 'Text',
   TextArea = 'Note',
-  Number = 'chiffre',
-  Date = 'date',
-  File = 'fichier',
-  Image = 'image',
+  Date = 'Date',
+  RadioButton = 'Radio',
+  Switch = 'Switch',
+  Checkbox = 'Checkbox',
+  Select = 'Select',
 }

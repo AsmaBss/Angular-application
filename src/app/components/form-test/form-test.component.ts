@@ -11,34 +11,50 @@ import { Form } from 'src/app/models/form';
   styleUrls: ['./form-test.component.css'],
 })
 export class FormTestComponent implements OnInit {
-  dynamicForm!: FormGroup;
   submitted = false;
 
-  dynamicForm2!: FormGroup;
+  dynamicForm1!: FormGroup;
   fieldTypeOptions = Object.values(FieldType);
   selectedFieldType!: string;
 
   constructor(
-    private formBuilder2: FormBuilder,
+    private formBuilder1: FormBuilder,
     private formService: FormService
   ) {}
 
   ngOnInit() {
-    this.dynamicForm2 = this.formBuilder2.group({
+    this.dynamicForm1 = this.formBuilder1.group({
       titre: ['', Validators.required],
       description: ['', Validators.required],
-      fields: new FormArray([]),
+      fields: this.formBuilder1.array([]), //new FormArray([]),
     });
   }
 
-  get f2() {
-    return this.dynamicForm2.controls;
+  get f1() {
+    return this.dynamicForm1.controls;
   }
+  get t1() {
+    return this.f1['fields'] as FormArray;
+  }
+  get fieldsFormGroups() {
+    return this.t1.controls as FormGroup[];
+  }
+  //
   get t2() {
-    return this.f2['fields'] as FormArray;
+    return this.t1.at(this.t1.controls.length - 1).get('items') as FormArray;
   }
-  get ticketFormGroups2() {
+  get itemsFormGroups() {
     return this.t2.controls as FormGroup[];
+  }
+
+  getItemss(fieldIndex: number) {
+    const fieldGroup = this.t1.at(fieldIndex) as FormGroup;
+    return fieldGroup.get('items') as FormArray;
+  }
+  itemsFormGroupsForField(fieldIndex: number) {
+    const fieldGroup = this.t1.at(fieldIndex) as FormGroup;
+    const itemsArray = fieldGroup.get('items') as FormArray;
+    return itemsArray.controls as FormGroup[];
   }
 
   getKeyByValue(value: string) {
@@ -48,43 +64,74 @@ export class FormTestComponent implements OnInit {
   }
 
   onChangeTickets2(e: any) {
-    console.log('click', e);
     var key = this.getKeyByValue(e);
-    console.log(key);
-
-    if (['Text', 'chiffre', 'Note'].includes(e)) {
-      this.t2.push(
-        this.formBuilder2.group({
+    if (['Text', 'Note'].includes(e)) {
+      this.t1.push(
+        this.formBuilder1.group({
+          type: key,
           label: ['', Validators.required],
           placeholder: ['', [Validators.required]],
+          value: ['', [Validators.required]],
           required: [, [Validators.required]],
-          type: key,
         })
       );
-    } else if (e === 'date') {
-      this.t2.push(
-        this.formBuilder2.group({
+    } else if (e === 'Date') {
+      this.t1.push(
+        this.formBuilder1.group({
+          type: key,
           label: ['', Validators.required],
           required: ['false', [Validators.required]],
+        })
+      );
+    } else if (e == 'Switch') {
+      this.t1.push(
+        this.formBuilder1.group({
           type: key,
+          label: ['', Validators.required],
+          value: ['', [Validators.required]],
+          //required: [, [Validators.required]],
+        })
+      );
+    } else if (['Radio', 'Checkbox', 'Select'].includes(e)) {
+      this.t1.push(
+        this.formBuilder1.group({
+          type: key,
+          label: ['', Validators.required],
+          value: ['', Validators.required],
+          items: this.formBuilder1.array([]),
         })
       );
     }
   }
 
-  updateRequiredValue(checkboxControl: any) {
-    checkboxControl.setValue(checkboxControl.value ? false : true);
+  addItem(fieldIndex: number) {
+    //this.t2.push(this.role());
+    const itemsArray = this.t1.at(fieldIndex).get('items') as FormArray;
+    itemsArray.push(this.role());
+  }
+  role() {
+    return this.formBuilder1.group({
+      label: ['', Validators.required],
+      value: ['', Validators.required],
+    });
+  }
+  /*remove(i: number): void {
+    this.t2.removeAt(i);
+  }*/
+  remove(fieldIndex: number, itemIndex: number): void {
+    const itemsArray = this.getItemss(fieldIndex);
+    itemsArray.removeAt(itemIndex);
   }
 
   onSubmit2() {
     this.submitted = true;
     alert(
-      'SUCCESS!! :-)\n\n' + JSON.stringify(this.dynamicForm2.value, null, 4)
+      'SUCCESS!! :-)\n\n' + JSON.stringify(this.dynamicForm1.value, null, 4)
     );
     let form: Form = new Form();
-    form.titre = this.dynamicForm2.value.titre;
-    form.description = this.dynamicForm2.value.description;
-    form.fields = JSON.stringify(this.dynamicForm2.value.fields);
+    form.titre = this.dynamicForm1.value.titre;
+    form.description = this.dynamicForm1.value.description;
+    form.fields = JSON.stringify(this.dynamicForm1.value.fields);
     this.formService.add(form).subscribe(
       (data) => {
         console.log('succes', data);
@@ -98,28 +145,13 @@ export class FormTestComponent implements OnInit {
   onReset() {
     // reset whole form back to initial state
     this.submitted = false;
-    this.dynamicForm2.reset();
-    this.t2.clear();
+    this.dynamicForm1.reset();
+    this.t1.clear();
   }
 
   onClear() {
     // clear errors and reset ticket fields
     this.submitted = false;
-    this.t2.reset();
+    this.t1.reset();
   }
 }
-/*
-  text1: any = {};
-  text2: any = {};
-  number: any = {};
-
-  convertToJson() {
-    const formData = {
-      text1: this.text1,
-      text2: this.text2,
-      number: this.number,
-    };
-
-    const jsonData = JSON.stringify(formData);
-    console.log(jsonData); // You can do whatever you want with the JSON data
-  }*/

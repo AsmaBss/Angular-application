@@ -1,14 +1,21 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ParcelleService } from 'src/app/services/parcelle.service';
-import { PlanSondageService } from 'src/app/services/plan-sondage.service';
 
 @Component({
-  selector: 'app-parcelle',
-  templateUrl: './parcelle.component.html',
-  styleUrls: ['./parcelle.component.css'],
+  selector: 'app-add-parcelle',
+  templateUrl: './add-parcelle.component.html',
+  styleUrls: ['./add-parcelle.component.css'],
 })
-export class ParcelleComponent implements OnInit {
+export class AddParcelleComponent implements OnInit {
+  @ViewChild('f') parcelleForm!: NgForm;
   @Output() verify = new EventEmitter<boolean>();
 
   parcelleShpFile!: File;
@@ -42,7 +49,7 @@ export class ParcelleComponent implements OnInit {
     }
   }
 
-  save() {
+  save(form: any) {
     const formData = new FormData();
     formData.append('shpFile', this.parcelleShpFile);
     formData.append('shxFile', this.parcelleShxFile);
@@ -60,11 +67,16 @@ export class ParcelleComponent implements OnInit {
           })
           .then(() => {
             this.router.navigate([currentUrl]);
+            form.reset();
           });
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  close() {
+    this.parcelleForm.resetForm();
   }
 }

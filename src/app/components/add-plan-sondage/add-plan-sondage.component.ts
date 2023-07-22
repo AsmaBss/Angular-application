@@ -1,15 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Parcelle } from 'src/app/models/parcelle';
 import { PlanSondageService } from 'src/app/services/plan-sondage.service';
 
 @Component({
-  selector: 'app-plan-sondage',
-  templateUrl: './plan-sondage.component.html',
-  styleUrls: ['./plan-sondage.component.css'],
+  selector: 'app-add-plan-sondage',
+  templateUrl: './add-plan-sondage.component.html',
+  styleUrls: ['./add-plan-sondage.component.css'],
 })
-export class PlanSondageComponent implements OnInit {
+export class AddPlanSondageComponent implements OnInit {
+  @ViewChild('f') sondageForm!: NgForm;
   @Input() parcelle!: Parcelle;
+  @Output() verify = new EventEmitter<boolean>();
 
   parcelleShpFile!: File;
   parcelleShxFile!: File;
@@ -42,22 +52,31 @@ export class PlanSondageComponent implements OnInit {
     }
   }
 
-  save() {
+  save(form: any) {
     const formData = new FormData();
     formData.append('shpFile', this.parcelleShpFile);
     formData.append('shxFile', this.parcelleShxFile);
     formData.append('dbfFile', this.parcelleDbfFile);
     formData.append('prjFile', this.parcellePrjFile);
 
-    this.planSondageService.add(formData, this.parcelle.id).subscribe();
-    const currentUrl = this.router.url;
-    this.router
-      .navigateByUrl('/Accueil', {
-        skipLocationChange: false,
-        onSameUrlNavigation: 'reload',
-      })
-      .then(() => {
-        this.router.navigate([currentUrl]);
+    this.planSondageService
+      .add(formData, this.parcelle.id)
+      .subscribe((data) => {
+        this.verify.emit(true);
+        const currentUrl = this.router.url;
+        this.router
+          .navigateByUrl('/Accueil', {
+            skipLocationChange: false,
+            onSameUrlNavigation: 'reload',
+          })
+          .then(() => {
+            this.router.navigate([currentUrl]);
+            form.reset();
+          });
       });
+  }
+
+  close() {
+    this.sondageForm.resetForm();
   }
 }

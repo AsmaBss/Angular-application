@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { FieldConfig } from './field-config';
-import { FieldType } from '../../form/field-type';
 
 @Component({
   selector: 'app-test',
@@ -14,7 +14,37 @@ import { FieldType } from '../../form/field-type';
   styleUrls: ['./test.component.css'],
 })
 export class TestComponent implements OnInit {
-  form!: FormGroup;
+  ngOnInit(): void {}
+  constructor(private fb: FormBuilder) {}
+  form = this.fb.group({
+    email: [
+      '',
+      {
+        validators: [Validators.required, Validators.email],
+      },
+    ],
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    roles: this.fb.array([]),
+  });
+
+  formValue(): void {
+    console.log(this.form.value);
+  }
+  remove(i: number): void {
+    this.rolesFieldAsFormArray.removeAt(i);
+  }
+  addControl(): void {
+    this.rolesFieldAsFormArray.push(this.role());
+  }
+  role(): any {
+    return this.fb.group({
+      role: this.fb.control(''),
+    });
+  }
+  get rolesFieldAsFormArray(): any {
+    return this.form.get('roles') as FormArray;
+  }
+  /* form!: FormGroup;
   dynamicFormControls: FormControl[] = [];
   fieldConfigs: FieldConfig[] = [];
   fieldTypeOptions = ['text', 'note', 'chiffre', 'date', 'fichier', 'dropdown'];
@@ -83,5 +113,5 @@ export class TestComponent implements OnInit {
     }
 
     console.log(formData); // You can do further processing with the JSON data as needed
-  }
+  }*/
 }

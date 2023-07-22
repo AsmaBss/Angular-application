@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 export class AdministrationComponent implements OnInit {
   users: User[] = [];
   displayUpdate: boolean = false;
+  id!: number;
 
   role!: TypeRole;
 
@@ -57,28 +58,30 @@ export class AdministrationComponent implements OnInit {
       cancelButtonText: 'Annuler',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userService.delete(id).subscribe();
-        Swal.fire(
-          'Supprimé!',
-          'Cette utilisateur a été supprimé.',
-          'success'
-        ).then(() => {
-          const currentUrl = this.router.url;
-          this.router
-            .navigateByUrl('/Accueil', {
-              skipLocationChange: false,
-              onSameUrlNavigation: 'reload',
-            })
-            .then(() => {
-              this.router.navigate([currentUrl]);
-              this.loadUsers();
-            });
+        this.userService.delete(id).subscribe((data) => {
+          Swal.fire(
+            'Supprimé!',
+            'Cette utilisateur a été supprimé.',
+            'success'
+          ).then(() => {
+            const currentUrl = this.router.url;
+            this.router
+              .navigateByUrl('/Accueil', {
+                skipLocationChange: false,
+                onSameUrlNavigation: 'reload',
+              })
+              .then(() => {
+                this.router.navigate([currentUrl]);
+                this.loadUsers();
+              });
+          });
         });
       }
     });
   }
 
   modalUpdate(id: number) {
+    this.id = id;
     this.displayUpdate = true;
   }
 }
