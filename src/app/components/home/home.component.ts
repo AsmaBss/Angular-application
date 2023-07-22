@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { GeoJSONObject } from '@turf/turf';
 import * as L from 'leaflet';
 import 'leaflet-sidebar-v2';
 import { Observation } from 'src/app/models/observation';
@@ -14,7 +15,6 @@ import { PasseService } from 'src/app/services/passe.service';
 import { PlanSondageService } from 'src/app/services/plan-sondage.service';
 import { PrelevementService } from 'src/app/services/prelevement.service';
 import { UserService } from 'src/app/services/user.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -117,10 +117,72 @@ export class HomeComponent implements AfterViewInit, OnInit {
   }
 
   selectedParcelle(event: Parcelle) {
-    //this.hideOptions = false;
     this.parcelle = event;
-    //if (this.parcelleLayer == undefined) {
-    const coordinates = event.geometry.coordinates
+    if (event.type === 'MultiPolygon') {
+      const polygons = event.geometry.coordinates
+        .replace('MULTIPOLYGON (((', '') // Remove "MULTIPOLYGON (((...)))" wrapper
+        .replace(')))', '') // Remove closing parentheses
+        .split(')), ((') // Split into individual polygons
+        .map((polygon: any) => {
+          const coords = polygon.split(', ');
+          return coords.map((coord: any) => {
+            const [lng, lat] = coord.split(' ');
+            return [parseFloat(lat), parseFloat(lng)];
+          });
+        });
+      console.log(polygons);
+
+      const polygonFeatures = polygons.map((coords: any) => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [coords],
+        },
+        properties: {},
+      }));
+      const polygonLayers = L.geoJSON(polygonFeatures).addTo(this.map);
+      this.map.fitBounds(polygonLayers.getBounds());
+      this.hideOptions = false;
+      var sidebar = L.control
+        .sidebar({
+          autopan: true,
+          closeButton: true,
+          container: 'sidebar',
+          position: 'left',
+        })
+        .addTo(this.map);
+    } else if (event.type === 'Polygon') {
+      const polygons = event.geometry.coordinates
+        .replace('POLYGON ((', '')
+        .replace('))', '')
+        .split(', ')
+        .map((polygon: any) => {
+          const [lng, lat] = polygon.split(' ');
+          return [parseFloat(lat), parseFloat(lng)];
+        });
+      const polygonFeature = {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [polygons],
+        },
+        properties: {},
+      };
+
+      const polygonLayer = L.polygon(polygons).addTo(this.map);
+      this.map.fitBounds(polygonLayer.getBounds());
+      this.hideOptions = false;
+      var sidebar = L.control
+        .sidebar({
+          autopan: true,
+          closeButton: true,
+          container: 'sidebar',
+          position: 'left',
+        })
+        .addTo(this.map);
+    }
+
+    /*const coordinates = event.geometry.coordinates
       .replace('MULTIPOLYGON (((', '')
       .replace(')))', '')
       .split(', ')
@@ -139,7 +201,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
         position: 'left',
       })
       .addTo(this.map);
-    //}
+    */
     this.loadPlanSondage();
     this.loadPrelevement();
     this.loadObservations();
@@ -157,11 +219,35 @@ export class HomeComponent implements AfterViewInit, OnInit {
             .map((coord: any) => {
               const [lng, lat] = coord.split(' ');
               this.planSondageLayer.push(
+                L.marker([lng, lat]).setIcon(greyIcon)
+              );
+              return {
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [lng, lat],
+                },
+                properties: {},
+              };
+            });
+        }
+      });
+    /*this.planSondageService
+      .getByParcelle(this.parcelle.id)
+      .subscribe((data) => {
+        for (var i in data) {
+          data[i].geometry.coordinates
+            .replace('POINT (', '')
+            .replace(')', '')
+            .split(', ')
+            .map((coord: any) => {
+              const [lng, lat] = coord.split(' ');
+              this.planSondageLayer.push(
                 L.marker([parseFloat(lat), parseFloat(lng)]).setIcon(greyIcon)
               );
             });
         }
-      });
+      });*/
   }
 
   loadPrelevement() {
