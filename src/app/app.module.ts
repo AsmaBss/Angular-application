@@ -13,8 +13,6 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
-import { SecurisationComponent } from './components/securisation/securisation.component';
-import { MapComponent } from './components/map/map.component';
 import { ImagesComponent } from './components/images/images.component';
 import { PrelevementComponent } from './components/prelevement/prelevement.component';
 import { ObservationImagesComponent } from './components/observation-images/observation-images.component';
@@ -30,7 +28,6 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { ListUsersComponent } from './components/list-users/list-users.component';
 import { ListParcellesComponent } from './components/list-parcelles/list-parcelles.component';
 import { UpdateUserComponent } from './components/update-user/update-user.component';
-import { VisualisationComponent } from './components/visualisation/visualisation.component';
 import { AdministrationComponent } from './components/administration/administration.component';
 import { AddParcelleComponent } from './components/add-parcelle/add-parcelle.component';
 import { AddPlanSondageComponent } from './components/add-plan-sondage/add-plan-sondage.component';
@@ -41,8 +38,6 @@ import { AddPlanSondageComponent } from './components/add-plan-sondage/add-plan-
     FooterComponent,
     HomeComponent,
     HeaderComponent,
-    SecurisationComponent,
-    MapComponent,
     ImagesComponent,
     PrelevementComponent,
     ObservationImagesComponent,
@@ -53,7 +48,6 @@ import { AddPlanSondageComponent } from './components/add-plan-sondage/add-plan-
     ListUsersComponent,
     ListParcellesComponent,
     UpdateUserComponent,
-    VisualisationComponent,
     AdministrationComponent,
     AddParcelleComponent,
     AddPlanSondageComponent,

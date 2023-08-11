@@ -52,9 +52,8 @@
                             <span class="">Observations</span>
                         </div>
                         <div>
-                            <!-- [hidden]="role.toString() !== 'ADMIN'"-->
-                            <button type="button" class="btn btn-flat-success mr-1 mb-1 waves-effect waves-light"><a
-                                    [attr.data-target]="'#addPlanSondage'" data-toggle="modal"
+                            <button type="button" class="btn btn-flat-success mr-1 mb-1 waves-effect waves-light"
+                                *ngIf="displayButton"><a [attr.data-target]="'#addPlanSondage'" data-toggle="modal"
                                     *ngIf="role.toString() == 'ADMIN'"
                                     style="background-color: transparent;border: 0 solid transparent;padding: 0;">
                                     <i class="feather icon-plus"></i> Plan Sondage

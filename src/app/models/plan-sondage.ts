@@ -5,7 +5,9 @@ export class PlanSondage {
   id!: number;
   file!: string;
   type!: string;
-  geometry!: any;
+  //geometry!: any;
+  latitude!: number;
+  longitude!: number;
   baseRef!: number;
   parcelle!: Parcelle;
   prelevement!: Prelevement;

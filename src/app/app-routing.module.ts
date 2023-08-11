@@ -5,7 +5,6 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './interceptor/auth.guard';
 import { TestComponent } from './components/test/test.component';
 import { FormTestComponent } from './components/form-test/form-test.component';
-import { VisualisationComponent } from './components/visualisation/visualisation.component';
 import { AdministrationComponent } from './components/administration/administration.component';
 
 const routes: Routes = [

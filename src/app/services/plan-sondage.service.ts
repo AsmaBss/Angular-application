@@ -18,6 +18,12 @@ export class PlanSondageService {
     );
   }
 
+  existByParcelle(id: number): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${this.apiUrl}/PlanSondage/exist/parcelle/` + id
+    );
+  }
+
   add(f: any, id: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/PlanSondage/add/` + id, f);
   }

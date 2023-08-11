@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { GeoJSONObject } from '@turf/turf';
 import * as L from 'leaflet';
 import 'leaflet-sidebar-v2';
+import { forkJoin, isEmpty } from 'rxjs';
 import { Observation } from 'src/app/models/observation';
 import { Parcelle } from 'src/app/models/parcelle';
 import { Passe } from 'src/app/models/passe';
+import { PlanSondage } from 'src/app/models/plan-sondage';
 import { Prelevement } from 'src/app/models/prelevement';
 import { Statut } from 'src/app/models/statut';
 import { TypeRole } from 'src/app/models/type-role';
@@ -26,7 +27,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
   private parcelleLayer!: L.Polygon;
   private planSondageLayer: L.Marker[] = [];
   private prelevementLayer: L.Marker[] = [];
-  private observationsLayer: L.CircleMarker[] = [];
+  private observationsLayer: L.Marker[] = []; //L.CircleMarker[] = [];
 
   hideOptions = true;
   isCheckedParcelle = true;
@@ -35,12 +36,14 @@ export class HomeComponent implements AfterViewInit, OnInit {
   isCheckedObservation = false;
   displayImagesPrelevement: boolean = false;
   displayImagesObservation: boolean = false;
+  displayButton!: boolean;
 
   users: User[] = [];
   displayUpdate: boolean = false;
 
   parcelles: Parcelle[] = [];
   parcelle!: Parcelle;
+  sondages: PlanSondage[] = [];
   prelevement!: Prelevement;
   passes!: Passe[];
   observation!: Observation;
@@ -60,6 +63,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
     private authService: AuthService,
     private userService: UserService
   ) {}
+
   ngOnInit(): void {
     this.getUserDetails();
   }
@@ -103,105 +107,71 @@ export class HomeComponent implements AfterViewInit, OnInit {
     this.map = L.map('map', {
       center: [loc.lat, loc.long],
       zoom: zoom,
+      minZoom: 0,
+      maxZoom: 25,
     });
     const mainLayer = L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
       {
         minZoom: 0,
-        maxZoom: 19,
+        maxZoom: 25,
         attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          'Map data &copy; <a href="https://www.google.com/maps">Google Maps</a>',
       }
     );
     mainLayer.addTo(this.map);
   }
 
   selectedParcelle(event: Parcelle) {
-    this.parcelle = event;
-    if (event.type === 'MultiPolygon') {
-      const polygons = event.geometry.coordinates
-        .replace('MULTIPOLYGON (((', '') // Remove "MULTIPOLYGON (((...)))" wrapper
-        .replace(')))', '') // Remove closing parentheses
-        .split(')), ((') // Split into individual polygons
-        .map((polygon: any) => {
-          const coords = polygon.split(', ');
-          return coords.map((coord: any) => {
-            const [lng, lat] = coord.split(' ');
+    if (this.parcelle != event) {
+      this.isCheckedParcelle = true;
+      this.parcelle = event;
+      if (event.type === 'MultiPolygon') {
+        const polygons = event.geometry.coordinates
+          .replace('MULTIPOLYGON (((', '')
+          .replace(')))', '')
+          .split(')), ((')
+          .map((polygon: any) => {
+            const coords = polygon.split(', ');
+            return coords.map((coord: any) => {
+              const [lng, lat] = coord.split(' ');
+              return [parseFloat(lat), parseFloat(lng)];
+            });
+          });
+        this.parcelleLayer = L.polygon(polygons).addTo(this.map);
+        this.map.fitBounds(this.parcelleLayer.getBounds());
+        this.hideOptions = false;
+        var sidebar = L.control
+          .sidebar({
+            autopan: true,
+            closeButton: true,
+            container: 'sidebar',
+            position: 'left',
+          })
+          .addTo(this.map);
+      } else if (event.type === 'Polygon') {
+        const polygons = event.geometry.coordinates
+          .replace('POLYGON ((', '')
+          .replace('))', '')
+          .split(', ')
+          .map((polygon: any) => {
+            const [lng, lat] = polygon.split(' ');
             return [parseFloat(lat), parseFloat(lng)];
           });
-        });
-      console.log(polygons);
-
-      const polygonFeatures = polygons.map((coords: any) => ({
-        type: 'Feature',
-        geometry: {
-          type: 'Polygon',
-          coordinates: [coords],
-        },
-        properties: {},
-      }));
-      const polygonLayers = L.geoJSON(polygonFeatures).addTo(this.map);
-      this.map.fitBounds(polygonLayers.getBounds());
-      this.hideOptions = false;
-      var sidebar = L.control
-        .sidebar({
-          autopan: true,
-          closeButton: true,
-          container: 'sidebar',
-          position: 'left',
-        })
-        .addTo(this.map);
-    } else if (event.type === 'Polygon') {
-      const polygons = event.geometry.coordinates
-        .replace('POLYGON ((', '')
-        .replace('))', '')
-        .split(', ')
-        .map((polygon: any) => {
-          const [lng, lat] = polygon.split(' ');
-          return [parseFloat(lat), parseFloat(lng)];
-        });
-      const polygonFeature = {
-        type: 'Feature',
-        geometry: {
-          type: 'Polygon',
-          coordinates: [polygons],
-        },
-        properties: {},
-      };
-
-      const polygonLayer = L.polygon(polygons).addTo(this.map);
-      this.map.fitBounds(polygonLayer.getBounds());
-      this.hideOptions = false;
-      var sidebar = L.control
-        .sidebar({
-          autopan: true,
-          closeButton: true,
-          container: 'sidebar',
-          position: 'left',
-        })
-        .addTo(this.map);
+        this.parcelleLayer = L.polygon(polygons).addTo(this.map);
+        this.map.fitBounds(this.parcelleLayer.getBounds());
+        this.hideOptions = false;
+        var sidebar = L.control
+          .sidebar({
+            autopan: true,
+            closeButton: true,
+            container: 'sidebar',
+            position: 'left',
+          })
+          .addTo(this.map);
+      }
     }
-
-    /*const coordinates = event.geometry.coordinates
-      .replace('MULTIPOLYGON (((', '')
-      .replace(')))', '')
-      .split(', ')
-      .map((coord: any) => {
-        const [lng, lat] = coord.split(' ');
-        return [parseFloat(lat), parseFloat(lng)];
-      });
-    this.parcelleLayer = L.polygon(coordinates).addTo(this.map);
-    this.map.fitBounds(this.parcelleLayer.getBounds());
-    this.hideOptions = false;
-    var sidebar = L.control
-      .sidebar({
-        autopan: true,
-        closeButton: true,
-        container: 'sidebar',
-        position: 'left',
-      })
-      .addTo(this.map);
-    */
+    this.psExist(event);
     this.loadPlanSondage();
     this.loadPrelevement();
     this.loadObservations();
@@ -212,116 +182,97 @@ export class HomeComponent implements AfterViewInit, OnInit {
       .getByParcelle(this.parcelle.id)
       .subscribe((data) => {
         for (var i in data) {
-          data[i].geometry.coordinates
-            .replace('POINT (', '')
-            .replace(')', '')
-            .split(', ')
-            .map((coord: any) => {
-              const [lng, lat] = coord.split(' ');
-              this.planSondageLayer.push(
-                L.marker([lng, lat]).setIcon(greyIcon)
-              );
-              return {
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  coordinates: [lng, lat],
-                },
-                properties: {},
-              };
-            });
+          this.planSondageLayer.push(
+            L.marker([
+              parseFloat(data[i].latitude.toString()),
+              parseFloat(data[i].longitude.toString()),
+            ]).setIcon(greyIcon)
+          );
         }
       });
-    /*this.planSondageService
-      .getByParcelle(this.parcelle.id)
-      .subscribe((data) => {
-        for (var i in data) {
-          data[i].geometry.coordinates
-            .replace('POINT (', '')
-            .replace(')', '')
-            .split(', ')
-            .map((coord: any) => {
-              const [lng, lat] = coord.split(' ');
-              this.planSondageLayer.push(
-                L.marker([parseFloat(lat), parseFloat(lng)]).setIcon(greyIcon)
-              );
-            });
-        }
-      });*/
   }
 
   loadPrelevement() {
     this.planSondageService
       .getByParcelle(this.parcelle.id)
       .subscribe((data) => {
-        for (var i in data) {
-          data[i].geometry.coordinates
-            .replace('POINT (', '')
-            .replace(')', '')
-            .split(', ')
-            .map((coord: any) => {
-              const [lng, lat] = coord.split(' ');
-              this.prelevementService
-                .getByPlanSondage(data[i].id)
-                .subscribe((prelevement) => {
-                  if (prelevement != null) {
-                    const myDiv = document.getElementById('details-container');
-                    if (prelevement.statut == Statut.Securise) {
-                      this.prelevementLayer.push(
-                        L.marker([parseFloat(lat), parseFloat(lng)], {
-                          zIndexOffset: 9999,
-                        })
-                          .setIcon(greenIcon)
-                          .on('click', () => {
-                            this.loadPasses(prelevement.id);
-                            if (myDiv) {
-                              this.prelevement = prelevement;
-                              if (this.prelevement != undefined) {
-                                myDiv.style.display = 'block';
-                                this.closeDiv('Observation');
-                              }
-                            }
-                          })
-                      );
-                    } else if (prelevement.statut == Statut.A_Verifier) {
-                      this.prelevementLayer.push(
-                        L.marker([parseFloat(lat), parseFloat(lng)], {
-                          zIndexOffset: 9999,
-                        })
-                          .setIcon(orangeIcon)
-                          .on('click', () => {
-                            this.loadPasses(prelevement.id);
-                            if (myDiv) {
-                              this.prelevement = prelevement;
-                              if (this.prelevement != undefined) {
-                                myDiv.style.display = 'block';
-                                this.closeDiv('Observation');
-                              }
-                            }
-                          })
-                      );
-                    } else if (prelevement.statut == Statut.Non_Securise) {
-                      this.prelevementLayer.push(
-                        L.marker([parseFloat(lat), parseFloat(lng)], {
-                          zIndexOffset: 9999,
-                        })
-                          .setIcon(redIcon)
-                          .on('click', () => {
-                            this.loadPasses(prelevement.id);
-                            if (myDiv) {
-                              this.prelevement = prelevement;
-                              if (this.prelevement != undefined) {
-                                this.closeDiv('Observation');
-                                myDiv.style.display = 'block';
-                              }
-                            }
-                          })
-                      );
-                    }
+        const observables = data.map((d) =>
+          this.prelevementService.getByPlanSondage(d.id)
+        );
+        forkJoin(observables).subscribe((prelevements) => {
+          prelevements.forEach((prelevement, index) => {
+            const myDiv = document.getElementById('details-container');
+            if (prelevement != null) {
+              if (prelevement.statut == Statut.Securise) {
+                const marker = L.marker(
+                  [
+                    parseFloat(data[index].latitude.toString()),
+                    parseFloat(data[index].longitude.toString()),
+                  ],
+                  {
+                    zIndexOffset: 9999,
                   }
-                });
-            });
-        }
+                )
+                  .setIcon(greenIcon)
+                  .on('click', () => {
+                    this.loadPasses(prelevement.id);
+                    if (myDiv) {
+                      this.prelevement = prelevement;
+                      if (this.prelevement != undefined) {
+                        myDiv.style.display = 'block';
+                        this.closeDiv('Observation');
+                      }
+                    }
+                  });
+                this.prelevementLayer.push(marker);
+              } else if (prelevement.statut == Statut.A_Verifier) {
+                const marker = L.marker(
+                  [
+                    parseFloat(data[index].latitude.toString()),
+                    parseFloat(data[index].longitude.toString()),
+                  ],
+                  {
+                    zIndexOffset: 9999,
+                  }
+                )
+                  .setIcon(orangeIcon)
+                  .on('click', () => {
+                    this.loadPasses(prelevement.id);
+                    if (myDiv) {
+                      this.prelevement = prelevement;
+                      if (this.prelevement != undefined) {
+                        myDiv.style.display = 'block';
+                        this.closeDiv('Observation');
+                      }
+                    }
+                  });
+                this.prelevementLayer.push(marker);
+              } else if (prelevement.statut == Statut.Non_Securise) {
+                const marker = L.marker(
+                  [
+                    parseFloat(data[index].latitude.toString()),
+                    parseFloat(data[index].longitude.toString()),
+                  ],
+                  {
+                    zIndexOffset: 9999,
+                  }
+                )
+                  .setIcon(redIcon)
+                  .on('click', () => {
+                    this.loadPasses(prelevement.id);
+                    if (myDiv) {
+                      this.prelevement = prelevement;
+                      if (this.prelevement != undefined) {
+                        this.closeDiv('Observation');
+                        myDiv.style.display = 'block';
+                      }
+                    }
+                  });
+                this.prelevementLayer.push(marker);
+              }
+            }
+          });
+        });
       });
   }
 
@@ -339,7 +290,26 @@ export class HomeComponent implements AfterViewInit, OnInit {
           const observation = data[i];
           const myDiv = document.getElementById('details-container2');
           this.observationsLayer.push(
-            L.circleMarker(
+            L.marker(
+              [
+                parseFloat(data[i].latitude.toString()),
+                parseFloat(data[i].longitude.toString()),
+              ],
+              {
+                zIndexOffset: 9999,
+              }
+            )
+              .setIcon(eyeIcon)
+              .on('click', () => {
+                if (myDiv) {
+                  this.observation = observation;
+                  if (this.observation != undefined) {
+                    this.closeDiv('Prelevement');
+                    myDiv.style.display = 'block';
+                  }
+                }
+              })
+            /*L.circleMarker(
               [parseFloat(data[i].latitude), parseFloat(data[i].longitude)],
               {
                 radius: 10,
@@ -354,7 +324,7 @@ export class HomeComponent implements AfterViewInit, OnInit {
                   myDiv.style.display = 'block';
                 }
               }
-            })
+            })*/
           );
         }
       });
@@ -429,7 +399,18 @@ export class HomeComponent implements AfterViewInit, OnInit {
   verif(event: boolean) {
     if ((this.veriff = true)) {
       this.loadPlanSondage();
+      this.psExist(this.parcelle);
     }
+  }
+
+  psExist(parcelle: Parcelle) {
+    this.planSondageService.existByParcelle(parcelle.id).subscribe((data) => {
+      if (data == true) {
+        this.displayButton = false;
+      } else {
+        this.displayButton = true;
+      }
+    });
   }
 }
 
@@ -472,4 +453,14 @@ const orangeIcon = L.icon({
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
   shadowSize: [41, 41],
+});
+const eyeIcon = L.icon({
+  iconUrl:
+    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+  shadowUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
 });

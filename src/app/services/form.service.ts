@@ -13,7 +13,6 @@ export class FormService {
   constructor(private http: HttpClient) {}
 
   add(f: Form): Observable<Form> {
-    console.log('--------> ', f);
     return this.http.post<Form>(`${this.apiUrl}/Form/add`, f);
   }
 }

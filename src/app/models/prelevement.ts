@@ -1,5 +1,6 @@
+import { ImagesPrelevement } from './images-prelevement';
+import { Passe } from './passe';
 import { PlanSondage } from './plan-sondage';
-import { Securisation } from './securisation';
 import { Statut } from './statut';
 
 export class Prelevement {
@@ -12,7 +13,6 @@ export class Prelevement {
   remarques!: string;
   statut!: Statut;
   planSondage!: PlanSondage;
-  securisation!: Securisation;
-  images!: any[];
-  passes!: any[];
+  images!: ImagesPrelevement[];
+  passes!: Passe[];
 }

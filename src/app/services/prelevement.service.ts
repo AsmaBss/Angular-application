@@ -12,12 +12,6 @@ export class PrelevementService {
 
   constructor(private http: HttpClient) {}
 
-  getAllBySecurisation(id: number): Observable<Prelevement[]> {
-    return this.http.get<Prelevement[]>(
-      `${this.apiUrl}/Prelevement/show/securisation/` + id
-    );
-  }
-
   getByPlanSondage(id: number): Observable<Prelevement> {
     return this.http.get<Prelevement>(
       `${this.apiUrl}/Prelevement/show/sondage/` + id

@@ -1,5 +1,7 @@
+import { Observation } from './observation';
 import { PlanSondage } from './plan-sondage';
 import { Securisation } from './securisation';
+import { User } from './user';
 
 export class Parcelle {
   id!: number;
@@ -12,5 +14,6 @@ export class Parcelle {
   geometry!: any;
   planSondage!: PlanSondage[];
   securisation!: Securisation;
-  //observation!: Observations[];
+  observations!: Observation[];
+  users!: User[];
 }

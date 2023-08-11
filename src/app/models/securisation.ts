@@ -9,5 +9,4 @@ export class Securisation {
   profondeurASecuriser!: number;
   coteASecuriser!: number;
   parcelle!: Parcelle;
-  prelevement!: Prelevement[];
 }
