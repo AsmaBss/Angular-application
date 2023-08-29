@@ -455,8 +455,7 @@ const orangeIcon = L.icon({
   shadowSize: [41, 41],
 });
 const eyeIcon = L.icon({
-  iconUrl:
-    'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+  iconUrl: '../../../assets/app-assets/images/eye.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],

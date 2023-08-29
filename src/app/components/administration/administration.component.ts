@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 })
 export class AdministrationComponent implements OnInit {
   users: User[] = [];
+  allUsers: any[] = [];
   displayUpdate: boolean = false;
   id!: number;
 
@@ -44,7 +45,20 @@ export class AdministrationComponent implements OnInit {
     this.userService.getAll().subscribe((data) => {
       data.shift();
       this.users = data;
+      this.allUsers = data.map((item) => ({
+        id: item.id,
+        firstname: item.firstname,
+        lastname: item.lastname,
+        email: item.email,
+        role: this.getRoleDisplayName(item.roles[0].type),
+      }));
     });
+  }
+
+  getRoleDisplayName(role: TypeRole): string {
+    const roleKey = role as unknown as keyof typeof TypeRole;
+    const roleValue = TypeRole[roleKey];
+    return roleValue;
   }
 
   deleteUser(id: number) {

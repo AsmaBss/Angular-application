@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { Role } from 'src/app/models/role';
 import { TypeRole } from 'src/app/models/type-role';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,7 +13,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./list-users.component.css'],
 })
 export class ListUsersComponent implements OnInit {
-  users: User[] = [];
+  users: any[] = [];
 
   displayUpdate: boolean = false;
 
@@ -25,8 +26,28 @@ export class ListUsersComponent implements OnInit {
   loadUsers() {
     this.userService.getAll().subscribe((data) => {
       data.shift();
-      this.users = data;
+      //this.users = data;
+      this.users = data.map((item) => ({
+        id: item.id,
+        firstname: item.firstname,
+        lastname: item.lastname,
+        email: item.email,
+        role: item.roles[0].type,
+      }));
     });
+  }
+
+  getRoleDisplayName(role: TypeRole): string {
+    switch (role) {
+      case TypeRole.ADMIN:
+        return 'Admin';
+      case TypeRole.SUPERVISOR:
+        return 'Superviseur';
+      case TypeRole.SIMPLE_USER:
+        return 'Utilisateur simple';
+      default:
+        return '';
+    }
   }
 
   deleteUser(id: number) {

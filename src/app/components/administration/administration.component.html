@@ -29,11 +29,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let u of users">
+                                            <tr *ngFor="let u of allUsers">
                                                 <td>{{ u.firstname }}</td>
                                                 <td>{{ u.lastname }}</td>
                                                 <th>{{ u.email }}</th>
-                                                <th>{{ u.roles[0].type }}</th>
+                                                <th>{{ u.role }}</th>
                                                 <td>
                                                     <a (click)="deleteUser(u.id)"><i
                                                             class="feather icon-trash-2"></i></a>
@@ -41,10 +41,11 @@
                                                 <td>
                                                     <a class="nav-link nav-link-expand"
                                                         [attr.data-target]="'#updateUser-'+ u.id" data-toggle="modal"
-                                                        [hidden]="u.roles[0].type.toString() != 'SIMPLE_USER'"
+                                                        [hidden]="u.role.toString() != 'Utilisateur simple'"
                                                         (click)="modalUpdate(u.id)">
                                                         <i class="feather icon-edit"></i>
                                                     </a>
+                                                    <!-- [hidden]="u.roles[0].type.toString() != 'SIMPLE_USER'" -->
                                                 </td>
                                                 <div class="modal fade" [id]="'updateUser-' + u.id" role="dialog"
                                                     aria-labelledby="updateUserTitle" aria-hidden="true"

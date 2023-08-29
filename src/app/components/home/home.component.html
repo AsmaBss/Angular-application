@@ -11,6 +11,7 @@
                 </div>
                 <div class="leaflet-sidebar-content">
                     <div class="leaflet-sidebar-pane active" id="home">
+                        <h5 class="modal-title" *ngIf="parcelle != null">{{ parcelle!.nom }}</h5>
                         <div class="vs-checkbox-con vs-checkbox-success" style="margin:1rem;">
                             <input type="checkbox" [(ngModel)]="isCheckedParcelle"
                                 (change)="onCheckboxChange('parcelle')">
